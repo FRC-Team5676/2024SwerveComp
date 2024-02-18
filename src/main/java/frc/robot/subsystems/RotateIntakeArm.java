@@ -13,34 +13,28 @@ public class RotateIntakeArm extends SubsystemBase {
 
   private final int m_leftintakeCanId = 21;
   private final int m_rightintakeCanId = 23;
-  
+
   private final RelativeEncoder m_leftdriveEncoder;
   private final CANSparkMax m_leftdriveMotor;
   private final CANSparkMax m_rightdriveMotor;
   private final SparkPIDController m_leftdriveController;
   private final SparkPIDController m_rightdriveController;
 
-  
   private final double minRotations = 0;
   private final double maxRotations = 9.23;
 
-  public RotateIntakeArm(
-    boolean rightdriveMotorInverted
-  ) {
-    
-
-    
+  public RotateIntakeArm(boolean motorInverted) {
     m_leftdriveMotor = new CANSparkMax(m_leftintakeCanId, MotorType.kBrushless);
     m_leftdriveMotor.restoreFactoryDefaults();
-    //m_leftdriveMotor.setInverted(m_leftintakeMotorReversed);
+    // m_leftdriveMotor.setInverted(m_leftintakeMotorReversed);
     m_leftdriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     m_rightdriveMotor = new CANSparkMax(m_rightintakeCanId, MotorType.kBrushless);
     m_rightdriveMotor.restoreFactoryDefaults();
-    //m_rightdriveMotor.setInverted(m_rightintakeMotorReversed);
+    // m_rightdriveMotor.setInverted(m_rightintakeMotorReversed);
     m_rightdriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    m_rightdriveMotor.setInverted(rightdriveMotorInverted);
-    
+    m_rightdriveMotor.setInverted(motorInverted);
+
     // drive encoder setup
 
     m_leftdriveEncoder = m_leftdriveMotor.getEncoder();
@@ -52,7 +46,7 @@ public class RotateIntakeArm extends SubsystemBase {
     m_leftdriveController.setFF(0);
     m_leftdriveController.setOutputRange(-1, 1);
 
-     //m_rightdriveEncoder = m_rightdriveMotor.getEncoder();
+    // m_rightdriveEncoder = m_rightdriveMotor.getEncoder();
 
     m_rightdriveController = m_rightdriveMotor.getPIDController();
     m_rightdriveController.setP(0.01);
@@ -78,14 +72,14 @@ public class RotateIntakeArm extends SubsystemBase {
 
   public double getPosition() {
     return m_leftdriveEncoder.getPosition();
-  
+
   }
-  
+
   public void setIntakePosition(double position) {
     setReferenceValue(position);
   }
 
-    public void rotateIntake(double throttle) {
+  public void rotateIntake(double throttle) {
     m_leftdriveMotor.set(throttle);
     m_rightdriveMotor.set(throttle);
   }
@@ -98,7 +92,6 @@ public class RotateIntakeArm extends SubsystemBase {
   public void setReferencePeriodic() {
     m_leftdriveController.setReference(rotations, CANSparkMax.ControlType.kPosition);
   }
-  
 
   public void setReferenceValue(double rotation) {
     rotations = rotation;

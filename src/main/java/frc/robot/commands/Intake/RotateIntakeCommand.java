@@ -1,17 +1,17 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.controllers.xbox;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.RotateIntakeArm;
 
 
 public class RotateIntakeCommand extends Command {
 
   private final RotateIntakeArm m_controlArm;
-  private final xbox m_controller;
+  private final CommandXboxController m_controller;
 
   /** Driver control */
-  public RotateIntakeCommand(RotateIntakeArm controlArm, xbox controller) {
+  public RotateIntakeCommand(RotateIntakeArm controlArm, CommandXboxController controller) {
       m_controlArm = controlArm;
       m_controller = controller;
 
@@ -30,7 +30,7 @@ public class RotateIntakeCommand extends Command {
   @Override
   public void execute() {
 
-    double throttle = m_controller.getRightTrigger() - m_controller.getLeftTrigger();
+    double throttle = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis();
     m_controlArm.rotateIntake(throttle * 0.30);
     
   }

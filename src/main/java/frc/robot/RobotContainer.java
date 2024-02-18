@@ -4,16 +4,14 @@ import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.SpinUp;
 import frc.robot.utils.AutonManager;
 import frc.robot.commands.Intake.RotateIntakeCommand;
-import frc.robot.commands.Intake.SpinUpCommand;
 import frc.robot.commands.swerve.TeleopSwerveCommand;
 import frc.robot.constants.DriveConstants;
-import frc.robot.controllers.xbox;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.RotateIntakeArm;
 
@@ -35,7 +33,7 @@ public class RobotContainer {
 
   // The driver's controller
   private final CommandJoystick driver = new CommandJoystick(1);
-  private final xbox operator = new xbox(0);
+  private final CommandXboxController operator = new CommandXboxController(0);
 
   // The robot's subsystems
   private final SwerveDrive swerve = new SwerveDrive();
@@ -94,8 +92,9 @@ public class RobotContainer {
             () -> -MathUtil.applyDeadband(driver.getZ(), DriveConstants.kRotationDeadband)));
 
     driver.button(1).onTrue(new InstantCommand(swerve::toggleFieldRelative));
-    driver.button(2).onTrue(new InstantCommand(swerve::zeroGyro));
-    spinUpWheels.setDefaultCommand(new SpinUpCommand(spinUpWheels, operator));
+    driver.button(0).onTrue(new InstantCommand(swerve::zeroGyro));
+
+    operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(spinUpWheels::SpinUpWheels));
     
     intakeArm.setDefaultCommand(new RotateIntakeCommand(intakeArm, operator));
     

@@ -19,10 +19,8 @@ public class SpinUp extends SubsystemBase {
   private final SparkPIDController uppershooterController;
   private final SparkPIDController lowershooterController;
 
-
- 
   public SpinUp() {
-    
+
     uppershooterMotor.restoreFactoryDefaults();
     lowershooterMotor.restoreFactoryDefaults();
 
@@ -34,7 +32,7 @@ public class SpinUp extends SubsystemBase {
 
     uppershooterEncoder.setPosition(0);
     lowershooterEncoder.setPosition(0);
-     
+
     uppershooterController = uppershooterMotor.getPIDController();
     uppershooterController.setP(0.01);
     uppershooterController.setI(0);
@@ -42,7 +40,7 @@ public class SpinUp extends SubsystemBase {
     uppershooterController.setIZone(0);
     uppershooterController.setFF(0);
     uppershooterController.setOutputRange(-1, 1);
-    
+
     lowershooterController = lowershooterMotor.getPIDController();
     lowershooterController.setP(0.01);
     lowershooterController.setI(0);
@@ -50,10 +48,7 @@ public class SpinUp extends SubsystemBase {
     lowershooterController.setIZone(0);
     lowershooterController.setFF(0);
     lowershooterController.setOutputRange(-1, 1);
-    
-       
-    
-    
+
   }
 
   @Override
@@ -62,23 +57,22 @@ public class SpinUp extends SubsystemBase {
     SmartDashboard.putNumber("Lower Shooter Encoder", lowershooterEncoderValue());
   }
 
-  
-  public double uppershooterEncoderValue(){
+  public double uppershooterEncoderValue() {
     return uppershooterEncoder.getPosition();
   }
 
-  public double lowershooterEncoderValue(){
+  public double lowershooterEncoderValue() {
     return lowershooterEncoder.getPosition();
   }
 
-  public void SpinUpWheels(){
+  public void SpinUpWheels() {
     uppershooterMotor.set(1);
     lowershooterMotor.set(1);
   }
 
-public void stop(){
-  uppershooterMotor.set(0);
-  lowershooterMotor.set(0);
-}
-  
+  public void stop() {
+    uppershooterMotor.set(0);
+    lowershooterMotor.set(0);
+  }
+
 }
