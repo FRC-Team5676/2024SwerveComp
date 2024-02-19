@@ -72,8 +72,7 @@ public class SpinUp extends SubsystemBase {
     uppershooterMotor.set(1);
     lowershooterMotor.set(1);
   }
-
-  public void stop() {
+   public void stop() {
     uppershooterMotor.set(0);
     lowershooterMotor.set(0);
   }

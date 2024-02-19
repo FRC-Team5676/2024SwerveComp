@@ -26,6 +26,7 @@ public class PickUpNote extends SubsystemBase {
     m_noteMotor.set(1);
   }
 
+
   public void stop(){
     m_noteMotor.set(0);
   }
