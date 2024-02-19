@@ -26,12 +26,10 @@ public class RotateIntakeArm extends SubsystemBase {
   public RotateIntakeArm(boolean motorInverted) {
     m_leftdriveMotor = new CANSparkMax(m_leftintakeCanId, MotorType.kBrushless);
     m_leftdriveMotor.restoreFactoryDefaults();
-    // m_leftdriveMotor.setInverted(m_leftintakeMotorReversed);
     m_leftdriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     m_rightdriveMotor = new CANSparkMax(m_rightintakeCanId, MotorType.kBrushless);
     m_rightdriveMotor.restoreFactoryDefaults();
-    // m_rightdriveMotor.setInverted(m_rightintakeMotorReversed);
     m_rightdriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     m_rightdriveMotor.setInverted(motorInverted);
 
