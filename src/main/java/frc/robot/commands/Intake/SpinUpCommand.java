@@ -7,6 +7,8 @@ public class SpinUpCommand extends Command {
 
   private final SpinUp m_spinupwheels;
 
+  private boolean isOn = false;
+
   /** Driver control */
   public SpinUpCommand(SpinUp spinwheels) {
     m_spinupwheels = spinwheels;
@@ -23,7 +25,9 @@ public class SpinUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_spinupwheels.SpinUpWheels();
+    if (isOn) {
+      m_spinupwheels.SpinUpWheels();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -35,5 +39,9 @@ public class SpinUpCommand extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public void TurnOnTurnOff() {
+    isOn = !isOn;
   }
 }
