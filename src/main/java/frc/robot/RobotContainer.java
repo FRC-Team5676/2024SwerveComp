@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.PickUpNote;
 import frc.robot.subsystems.RotateIntakeArm;
 
 
@@ -41,7 +42,8 @@ public class RobotContainer {
   private final SwerveDrive swerve = new SwerveDrive();
   private final RotateIntakeArm intakeArm = new RotateIntakeArm(true);
   private final SpinUp spinUpWheels = new SpinUp();
-  private final SpinUp stop = new SpinUp();
+  private final PickUpNote notemotoron = new PickUpNote();
+  //private final SpinUp stop = new SpinUp();
 
 
   /**
@@ -98,6 +100,7 @@ public class RobotContainer {
     driver.button(0).onTrue(new InstantCommand(swerve::zeroGyro));
 
     operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(spinUpWheels::SpinUpWheels));
+    operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(notemotoron::runintake));
     //operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(stop::stop));
     
     intakeArm.setDefaultCommand(new RotateIntakeCommand(intakeArm, operator));
