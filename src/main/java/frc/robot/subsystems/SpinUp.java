@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.RelativeEncoder;
@@ -10,8 +10,10 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class SpinUp extends SubsystemBase {
 
+  
   private final CANSparkMax uppershooterMotor = new CANSparkMax(40, MotorType.kBrushless);
   private final CANSparkMax lowershooterMotor = new CANSparkMax(42, MotorType.kBrushless);
+
 
   private final RelativeEncoder uppershooterEncoder = uppershooterMotor.getEncoder();
   private final RelativeEncoder lowershooterEncoder = lowershooterMotor.getEncoder();
@@ -20,6 +22,7 @@ public class SpinUp extends SubsystemBase {
   private final SparkPIDController lowershooterController;
 
   public SpinUp() {
+
 
     uppershooterMotor.restoreFactoryDefaults();
     lowershooterMotor.restoreFactoryDefaults();
@@ -53,8 +56,8 @@ public class SpinUp extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Upper Shooter Encoder", uppershooterEncoderValue());
-    SmartDashboard.putNumber("Lower Shooter Encoder", lowershooterEncoderValue());
+    //SmartDashboard.putNumber("Upper Shooter Encoder", uppershooterEncoderValue());
+    //SmartDashboard.putNumber("Lower Shooter Encoder", lowershooterEncoderValue());
   }
 
   public double uppershooterEncoderValue() {
