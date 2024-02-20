@@ -1,19 +1,22 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.SpinUp;
 
 public class SpinUpCommand extends Command {
 
   private final SpinUp m_spinupwheels;
+  private final CommandXboxController m_controller;
 
-  private boolean isOn = false;
+  //private boolean ison = false;
 
   /** Driver control */
-  public SpinUpCommand(SpinUp spinwheels) {
+  public SpinUpCommand(SpinUp spinwheels, CommandXboxController controller) {
     m_spinupwheels = spinwheels;
+    m_controller = controller;
 
-    addRequirements(m_spinupwheels);
+    addRequirements(spinwheels);
   }
 
   // Called when the command is initially scheduled.
@@ -25,10 +28,15 @@ public class SpinUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (isOn) {
-      m_spinupwheels.SpinUpWheels();
-    }
+
+    double throttle = m_controller.getLeftY();
+    m_spinupwheels.SpinUpWheels(throttle);
+
   }
+
+  /*public void TurnOnTurnOff(boolean ison) {
+    ison = !ison;
+  }*/
 
   // Called once the command ends or is interrupted.
   @Override
@@ -41,7 +49,4 @@ public class SpinUpCommand extends Command {
     return false;
   }
 
-  public void TurnOnTurnOff() {
-    isOn = !isOn;
-  }
 }

@@ -3,14 +3,15 @@ package frc.robot;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.SpinUp;
 import frc.robot.utils.AutonManager;
+import frc.robot.commands.Intake.PickupCommand;
 import frc.robot.commands.Intake.RotateIntakeCommand;
 import frc.robot.commands.Intake.SpinUpCommand;
 import frc.robot.commands.swerve.TeleopSwerveCommand;
 import frc.robot.constants.DriveConstants;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.XboxController;
+//import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+//import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -40,12 +41,14 @@ public class RobotContainer {
 
   // The robot's subsystems
   private final SwerveDrive swerve = new SwerveDrive();
+  //private final PickUpNote intake = new PickUpNote();
   private final RotateIntakeArm intakeArm = new RotateIntakeArm(true);
   private final SpinUp spinUpWheels = new SpinUp();
+  //private final SpinUp spinUpWheels = new SpinUp();
  // private SpinUp stopWheels = new SpinUp();
-  private final PickUpNote notemotoron = new PickUpNote();
-  //private  PickUpNote stopIntake = new PickUpNote();
-  //private final SpinUp stop = new SpinUp();
+  //private final PickUpNote notemotoron = new PickUpNote();
+  private final PickUpNote intake = new PickUpNote();
+  //private final PickUpNote stop = new PickUpNote();
 
 
   /**
@@ -101,17 +104,23 @@ public class RobotContainer {
     driver.button(1).onTrue(new InstantCommand(swerve::toggleFieldRelative));
     driver.button(0).onTrue(new InstantCommand(swerve::zeroGyro));
 
-    operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(spinUpWheels::SpinUpWheels));
+    //operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(spinUpWheels::SpinUpWheels));
     //operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(stopWheels::StopWheels));
-    operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(notemotoron::runintake));
-    //operator.button(XboxController.Button.kStart.value).onTrue(new InstantCommand(stopIntake::stopintake));
-    //operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(stop::stop));
+    //operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(notemotoron::runintake));
+    //operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(slowIntake::slowIntake));
+    //operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(stop::stop));
     
+    intake.setDefaultCommand(new PickupCommand(intake, operator));
+
     intakeArm.setDefaultCommand(new RotateIntakeCommand(intakeArm, operator));
     
-    SpinUpCommand spinUpCommand = new SpinUpCommand(spinUpWheels);
+    spinUpWheels.setDefaultCommand(new SpinUpCommand(spinUpWheels, operator));
+
+    /*SpinUpCommand spinUpCommand = new SpinUpCommand(spinUpWheels);
     spinUpWheels.setDefaultCommand(spinUpCommand);
-    operator.button(XboxController.Button.kX.value).onTrue(Commands.runOnce(() -> spinUpCommand.TurnOnTurnOff()));
+    operator.button(XboxController.Button.kStart.value).onTrue(Commands.startEnd(() 
+    -> spinUpCommand.TurnOnTurnOff(true),()->spinUpCommand.TurnOnTurnOff(false)));
+    */
     
     
   }

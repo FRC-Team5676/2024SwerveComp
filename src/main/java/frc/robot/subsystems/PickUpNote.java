@@ -22,10 +22,13 @@ public class PickUpNote extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void runintake(){
+  /*public void runintake(){
     m_noteMotor.set(1);
-  }
+  }*/
 
+  public void intake(double throttle){
+    m_noteMotor.set(throttle);
+  }
 
   public void stop(){
     m_noteMotor.set(0);

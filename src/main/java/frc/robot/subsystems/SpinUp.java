@@ -28,7 +28,7 @@ public class SpinUp extends SubsystemBase {
     lowershooterMotor.restoreFactoryDefaults();
 
     lowershooterMotor.setInverted(true);
-    uppershooterMotor.setInverted(false);
+    uppershooterMotor.setInverted(true);
 
     uppershooterMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
     lowershooterMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
@@ -68,9 +68,9 @@ public class SpinUp extends SubsystemBase {
     return lowershooterEncoder.getPosition();
   }
 
-  public void SpinUpWheels() {
-    uppershooterMotor.set(1);
-    lowershooterMotor.set(1);
+  public void SpinUpWheels(double throttle) {
+    uppershooterMotor.set(throttle);
+    lowershooterMotor.set(throttle);
   }
    public void stop() {
     uppershooterMotor.set(0);
