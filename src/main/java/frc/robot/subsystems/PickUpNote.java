@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PickUpNote extends SubsystemBase {
 
-  private final CANSparkMax m_noteMotor = new CANSparkMax(43, MotorType.kBrushless);
+  private final CANSparkMax m_noteMotor = new CANSparkMax(61, MotorType.kBrushless);
 
   /** Creates a new PickUpNote. */
   public PickUpNote() {
@@ -22,15 +22,13 @@ public class PickUpNote extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  /*public void runintake(){
-    m_noteMotor.set(1);
-  }*/
 
   public void intake(double throttle){
-    m_noteMotor.set(throttle);
-  }
-
-  public void stop(){
-    m_noteMotor.set(0);
+    if (Math.abs(throttle) > 0.05) { // Stops drift on green wheels
+      m_noteMotor.set(throttle);
+    }
+    else {
+      m_noteMotor.set(0);
+    }
   }
 }

@@ -40,15 +40,10 @@ public class RobotContainer {
   private final CommandXboxController operator = new CommandXboxController(0);
 
   // The robot's subsystems
-  private final SwerveDrive swerve = new SwerveDrive();
-  //private final PickUpNote intake = new PickUpNote();
-  private final RotateIntakeArm intakeArm = new RotateIntakeArm(true);
-  private final SpinUp spinUpWheels = new SpinUp();
-  //private final SpinUp spinUpWheels = new SpinUp();
- // private SpinUp stopWheels = new SpinUp();
-  //private final PickUpNote notemotoron = new PickUpNote();
-  private final PickUpNote intake = new PickUpNote();
-  //private final PickUpNote stop = new PickUpNote();
+  private final SwerveDrive swerve = new SwerveDrive(); // Swerve drive system
+  private final RotateIntakeArm intakeArm = new RotateIntakeArm(true); // Arm controller
+  private final SpinUp spinUpWheels = new SpinUp(); // Pickup intake controller
+  private final PickUpNote intake = new PickUpNote(); // Cannon controller
 
 
   /**
@@ -104,11 +99,7 @@ public class RobotContainer {
     driver.button(1).onTrue(new InstantCommand(swerve::toggleFieldRelative));
     driver.button(0).onTrue(new InstantCommand(swerve::zeroGyro));
 
-    //operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(spinUpWheels::SpinUpWheels));
-    //operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(stopWheels::StopWheels));
-    //operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(notemotoron::runintake));
-    //operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(slowIntake::slowIntake));
-    //operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(stop::stop));
+    // Intake commands
     
     intake.setDefaultCommand(new PickupCommand(intake, operator));
 
@@ -116,12 +107,6 @@ public class RobotContainer {
     
     spinUpWheels.setDefaultCommand(new SpinUpCommand(spinUpWheels, operator));
 
-    /*SpinUpCommand spinUpCommand = new SpinUpCommand(spinUpWheels);
-    spinUpWheels.setDefaultCommand(spinUpCommand);
-    operator.button(XboxController.Button.kStart.value).onTrue(Commands.startEnd(() 
-    -> spinUpCommand.TurnOnTurnOff(true),()->spinUpCommand.TurnOnTurnOff(false)));
-    */
-    
     
   }
 }

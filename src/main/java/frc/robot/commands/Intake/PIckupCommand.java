@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+// Green wheels; the intake
+
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.PickUpNote;
 
 public class PickupCommand extends Command {
-  /** Creates a new PIckupCommand. */
+  /** Creates a new PickupCommand. */
   private final PickUpNote m_noteMotor;
   private final CommandXboxController m_controller;
 
@@ -29,8 +31,8 @@ public class PickupCommand extends Command {
   @Override
   public void execute() {
 
-    double throttle = m_controller.getRightY();
-    m_noteMotor.intake(throttle);
+    double throttle = m_controller.getRightY(); // Right joystick
+    m_noteMotor.intake(throttle*.3);
 
   }
 

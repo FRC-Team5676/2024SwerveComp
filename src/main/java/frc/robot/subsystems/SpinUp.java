@@ -11,8 +11,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class SpinUp extends SubsystemBase {
 
   
-  private final CANSparkMax uppershooterMotor = new CANSparkMax(40, MotorType.kBrushless);
-  private final CANSparkMax lowershooterMotor = new CANSparkMax(42, MotorType.kBrushless);
+  private final CANSparkMax uppershooterMotor = new CANSparkMax(62, MotorType.kBrushless);
+  private final CANSparkMax lowershooterMotor = new CANSparkMax(59, MotorType.kBrushless);
 
 
   private final RelativeEncoder uppershooterEncoder = uppershooterMotor.getEncoder();
@@ -69,12 +69,14 @@ public class SpinUp extends SubsystemBase {
   }
 
   public void SpinUpWheels(double throttle) {
-    uppershooterMotor.set(throttle);
-    lowershooterMotor.set(throttle);
-  }
-   public void stop() {
-    uppershooterMotor.set(0);
-    lowershooterMotor.set(0);
+    if (Math.abs(throttle) > 0.05) { // Stops drift on blue wheels
+      uppershooterMotor.set(throttle);
+      lowershooterMotor.set(throttle);
+    }
+    else {
+      uppershooterMotor.set(0);
+      lowershooterMotor.set(0);
+    }
   }
 
 }

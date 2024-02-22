@@ -77,15 +77,17 @@ public class RotateIntakeArm extends SubsystemBase {
     setReferenceValue(position);
   }
 
+// Throttle controllers
+
   public void rotateIntake(double throttle) {
-    m_leftdriveMotor.set(throttle);
-    m_rightdriveMotor.set(throttle);
+      m_leftdriveMotor.set(throttle);
+      m_rightdriveMotor.set(throttle);
   }
 
-  public void stop() {
+  /* public void stop() {
     m_leftdriveMotor.set(0);
     m_rightdriveMotor.set(0);
-  }
+  } */
 
   public void setReferencePeriodic() {
     m_leftdriveController.setReference(rotations, CANSparkMax.ControlType.kPosition);

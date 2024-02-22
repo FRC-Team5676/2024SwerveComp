@@ -47,7 +47,7 @@ public final class DriveConstants {
     public static final double kRobotLength = Units.inchesToMeters(21.25); // Distance between front and back wheels on robot
 
     // Drive Control
-    public static final boolean kFieldRelative = true;
+    public static final boolean kFieldRelative = false;
     public static final double kDirectionSlewRate = 1.2; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)

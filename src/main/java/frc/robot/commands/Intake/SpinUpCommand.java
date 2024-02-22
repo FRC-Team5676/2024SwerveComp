@@ -1,3 +1,5 @@
+// Blue wheels; "The Cannon"
+
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,7 +31,7 @@ public class SpinUpCommand extends Command {
   @Override
   public void execute() {
 
-    double throttle = m_controller.getLeftY();
+    double throttle = m_controller.getLeftY(); // Left joystick
     m_spinupwheels.SpinUpWheels(throttle);
 
   }
