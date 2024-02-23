@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.PickUpNote;
 
 public class PickupCommand extends Command {
-  
+
   /** Creates a new PickupCommand. */
   private final PickUpNote m_noteMotor;
   private final CommandXboxController m_controller;
@@ -33,7 +33,7 @@ public class PickupCommand extends Command {
   public void execute() {
 
     double throttle = m_controller.getRightY(); // Right joystick
-    m_noteMotor.intake(throttle * .3);
+    m_noteMotor.intake(throttle * 0.3);
 
   }
 

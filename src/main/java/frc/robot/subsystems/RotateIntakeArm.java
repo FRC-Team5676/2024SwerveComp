@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.RelativeEncoder;
@@ -11,53 +12,53 @@ public class RotateIntakeArm extends SubsystemBase {
 
   public double rotations;
 
-  private final int m_leftintakeCanId = 21;
-  private final int m_rightintakeCanId = 23;
+  private final int m_leftIntakeCanId = 21;
+  private final int m_rightIntakeCanId = 23;
 
-  private final RelativeEncoder m_leftdriveEncoder;
-  private final CANSparkMax m_leftdriveMotor;
-  private final CANSparkMax m_rightdriveMotor;
-  private final SparkPIDController m_leftdriveController;
-  private final SparkPIDController m_rightdriveController;
+  private final RelativeEncoder m_leftDriveEncoder;
+  private final CANSparkMax m_leftDriveMotor;
+  private final CANSparkMax m_rightDriveMotor;
+  private final SparkPIDController m_leftDriveController;
+  private final SparkPIDController m_rightDriveController;
 
   private final double minRotations = 0;
   private final double maxRotations = 9.23;
 
   public RotateIntakeArm(boolean motorInverted) {
-    m_leftdriveMotor = new CANSparkMax(m_leftintakeCanId, MotorType.kBrushless);
-    m_leftdriveMotor.restoreFactoryDefaults();
-    m_leftdriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_leftDriveMotor = new CANSparkMax(m_leftIntakeCanId, MotorType.kBrushless);
+    m_leftDriveMotor.restoreFactoryDefaults();
+    m_leftDriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-    m_rightdriveMotor = new CANSparkMax(m_rightintakeCanId, MotorType.kBrushless);
-    m_rightdriveMotor.restoreFactoryDefaults();
-    m_rightdriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    m_rightdriveMotor.setInverted(motorInverted);
+    m_rightDriveMotor = new CANSparkMax(m_rightIntakeCanId, MotorType.kBrushless);
+    m_rightDriveMotor.restoreFactoryDefaults();
+    m_rightDriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightDriveMotor.setInverted(motorInverted);
 
+    m_rightDriveMotor.follow(m_leftDriveMotor);
+    
     // drive encoder setup
 
-    m_leftdriveEncoder = m_leftdriveMotor.getEncoder();
-    m_leftdriveController = m_leftdriveMotor.getPIDController();
-    m_leftdriveController.setP(0.01);
-    m_leftdriveController.setI(0);
-    m_leftdriveController.setD(0);
-    m_leftdriveController.setIZone(0);
-    m_leftdriveController.setFF(0);
-    m_leftdriveController.setOutputRange(-1, 1);
+    m_leftDriveEncoder = m_leftDriveMotor.getEncoder();
+    m_leftDriveController = m_leftDriveMotor.getPIDController();
+    m_leftDriveController.setP(0.01);
+    m_leftDriveController.setI(0);
+    m_leftDriveController.setD(0);
+    m_leftDriveController.setIZone(0);
+    m_leftDriveController.setFF(0);
+    m_leftDriveController.setOutputRange(-1, 1);
 
-    // m_rightdriveEncoder = m_rightdriveMotor.getEncoder();
-
-    m_rightdriveController = m_rightdriveMotor.getPIDController();
-    m_rightdriveController.setP(0.01);
-    m_rightdriveController.setI(0);
-    m_rightdriveController.setD(0);
-    m_rightdriveController.setIZone(0);
-    m_rightdriveController.setFF(0);
-    m_rightdriveController.setOutputRange(-1, 1);
+    m_rightDriveController = m_rightDriveMotor.getPIDController();
+    m_rightDriveController.setP(0.01);
+    m_rightDriveController.setI(0);
+    m_rightDriveController.setD(0);
+    m_rightDriveController.setIZone(0);
+    m_rightDriveController.setFF(0);
+    m_rightDriveController.setOutputRange(-1, 1);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    setReferencePeriodic();
   }
 
   public double getMinRotations() {
@@ -69,36 +70,26 @@ public class RotateIntakeArm extends SubsystemBase {
   }
 
   public double getPosition() {
-    return m_leftdriveEncoder.getPosition();
-
+    return m_leftDriveEncoder.getPosition();
   }
 
   public void setIntakePosition(double position) {
-    setReferenceValue(position);
+    rotations = position;
   }
 
-// Throttle controllers
-
+  // Throttle controllers
   public void rotateIntake(double throttle) {
-      m_leftdriveMotor.set(throttle);
-      m_rightdriveMotor.set(throttle);
+    //m_leftDriveMotor.set(throttle);
+    //m_rightDriveMotor.set(throttle);
+    rotations += throttle;
+    setReferencePeriodic();
   }
-
-  /* public void stop() {
-    m_leftdriveMotor.set(0);
-    m_rightdriveMotor.set(0);
-  } */
 
   public void setReferencePeriodic() {
-    m_leftdriveController.setReference(rotations, CANSparkMax.ControlType.kPosition);
-  }
+    rotations = MathUtil.clamp(rotations, minRotations, maxRotations);
+    m_leftDriveController.setReference(rotations, CANSparkMax.ControlType.kPosition);
 
-  public void setReferenceValue(double rotation) {
-    rotations = rotation;
-  }
-
-  public void moveIntakeToPosition(double position) {
-    setReferenceValue(position);
-    setReferencePeriodic();
+    // I don't think we need because this moter is a follower
+    //m_rightDriveController.setReference(rotations, CANSparkMax.ControlType.kPosition); 
   }
 }
