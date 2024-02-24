@@ -32,16 +32,13 @@ import frc.robot.subsystems.RotateIntakeArm;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // Autonomous manager import
-  private final AutonManager autonManager = new AutonManager();
+  public final SwerveDrive swerve = new SwerveDrive(); // Swerve drive system
 
-  // The driver's controller
+  private final AutonManager autonManager = new AutonManager();
   private final CommandJoystick driver = new CommandJoystick(1);
   private final CommandXboxController operator = new CommandXboxController(0);
-
-  // The robot's subsystems
-  private final SwerveDrive swerve = new SwerveDrive(); // Swerve drive system
-  private final RotateIntakeArm intakeArm = new RotateIntakeArm(true); // Arm controller
+  
+  private final RotateIntakeArm intakeArm = new RotateIntakeArm(); // Arm controller
   private final SpinUp spinUpWheels = new SpinUp(); // Pickup intake controller
   private final PickUpNote intake = new PickUpNote(); // Cannon controller
 

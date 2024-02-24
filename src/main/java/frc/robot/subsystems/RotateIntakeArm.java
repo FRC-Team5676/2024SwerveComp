@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.IntakeArmConstants;
+import frc.robot.utils.ShuffleboardContent;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -12,50 +14,53 @@ public class RotateIntakeArm extends SubsystemBase {
 
   public double rotations;
 
-  private final int m_leftIntakeCanId = 21;
-  private final int m_rightIntakeCanId = 23;
+  private final RelativeEncoder m_leftEncoder;
+  private final RelativeEncoder m_rightEncoder;
+  private final CANSparkMax m_leftSparkMax;
+  private final CANSparkMax m_rightSparkMax;
+  private final SparkPIDController m_leftPIDController;
+  private final SparkPIDController m_rightPIDController;
 
-  private final RelativeEncoder m_leftDriveEncoder;
-  private final RelativeEncoder m_rightDriveEncoder;
-  private final CANSparkMax m_leftDriveMotor;
-  private final CANSparkMax m_rightDriveMotor;
-  private final SparkPIDController m_leftDriveController;
-  private final SparkPIDController m_rightDriveController;
+  public RotateIntakeArm() {
+    m_leftSparkMax = new CANSparkMax(IntakeArmConstants.kLeftCanId, MotorType.kBrushless);
+    m_leftSparkMax.restoreFactoryDefaults();
+    m_leftSparkMax.setIdleMode(IntakeArmConstants.kMotorIdleMode);
+    m_leftSparkMax.setInverted(false);
 
-  private final double minRotations = 0;
-  private final double maxRotations = 9.23;
+    m_rightSparkMax = new CANSparkMax(IntakeArmConstants.kRightCanId, MotorType.kBrushless);
+    m_rightSparkMax.restoreFactoryDefaults();
+    m_rightSparkMax.setIdleMode(IntakeArmConstants.kMotorIdleMode);
+    m_rightSparkMax.setInverted(true);
 
-  public RotateIntakeArm(boolean motorInverted) {
-    m_leftDriveMotor = new CANSparkMax(m_leftIntakeCanId, MotorType.kBrushless);
-    m_leftDriveMotor.restoreFactoryDefaults();
-    m_leftDriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-
-    m_rightDriveMotor = new CANSparkMax(m_rightIntakeCanId, MotorType.kBrushless);
-    m_rightDriveMotor.restoreFactoryDefaults();
-    m_rightDriveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    m_rightDriveMotor.setInverted(motorInverted);
-
-    m_rightDriveMotor.follow(m_leftDriveMotor);
+    m_rightSparkMax.follow(m_leftSparkMax);
     
-    // drive encoder setup
+    // Encoder setup
 
-    m_leftDriveEncoder = m_leftDriveMotor.getEncoder();
-    m_leftDriveController = m_leftDriveMotor.getPIDController();
-    m_leftDriveController.setP(0.01);
-    m_leftDriveController.setI(0);
-    m_leftDriveController.setD(0);
-    m_leftDriveController.setIZone(0);
-    m_leftDriveController.setFF(0);
-    m_leftDriveController.setOutputRange(-1, 1);
+    m_leftEncoder = m_leftSparkMax.getEncoder();
+    m_leftPIDController = m_leftSparkMax.getPIDController();
+    m_leftPIDController.setFeedbackDevice(m_leftEncoder);
+    m_leftEncoder.setPositionConversionFactor(IntakeArmConstants.kIntakeArmEncoderPositionFactor);
+    m_leftPIDController.setP(IntakeArmConstants.kP);
+    m_leftPIDController.setI(IntakeArmConstants.kI);
+    m_leftPIDController.setD(IntakeArmConstants.kD);
+    m_leftPIDController.setIZone(IntakeArmConstants.kIZone);
+    m_leftPIDController.setFF(IntakeArmConstants.kFF);
+    m_leftPIDController.setOutputRange(IntakeArmConstants.kMinOutput, IntakeArmConstants.kMaxOutput);
 
-    m_rightDriveEncoder = m_rightDriveMotor.getEncoder();
-    m_rightDriveController = m_rightDriveMotor.getPIDController();
-    m_rightDriveController.setP(0.01);
-    m_rightDriveController.setI(0);
-    m_rightDriveController.setD(0);
-    m_rightDriveController.setIZone(0);
-    m_rightDriveController.setFF(0);
-    m_rightDriveController.setOutputRange(-1, 1);
+    m_rightEncoder = m_rightSparkMax.getEncoder();
+    m_rightPIDController = m_rightSparkMax.getPIDController();
+    m_rightPIDController.setFeedbackDevice(m_rightEncoder);
+    m_rightPIDController.setP(IntakeArmConstants.kP);
+    m_rightPIDController.setI(IntakeArmConstants.kI);
+    m_rightPIDController.setD(IntakeArmConstants.kD);
+    m_rightPIDController.setIZone(IntakeArmConstants.kIZone);
+    m_rightPIDController.setFF(IntakeArmConstants.kFF);
+    m_rightPIDController.setOutputRange(IntakeArmConstants.kMinOutput, IntakeArmConstants.kMaxOutput);
+
+    m_leftSparkMax.burnFlash();
+    m_rightSparkMax.burnFlash();
+
+    ShuffleboardContent.initIntakeArm(this);
   }
 
   @Override
@@ -64,19 +69,19 @@ public class RotateIntakeArm extends SubsystemBase {
   }
 
   public double getMinRotations() {
-    return minRotations;
+    return IntakeArmConstants.kMinRotations;
   }
 
   public double getMaxRotations() {
-    return maxRotations;
+    return IntakeArmConstants.kMaxRotations;
   }
 
   public double getLeftPosition() {
-    return m_leftDriveEncoder.getPosition();
+    return m_leftEncoder.getPosition();
   }
 
   public double getRightPosition() {
-    return m_rightDriveEncoder.getPosition();
+    return m_rightEncoder.getPosition();
   }
 
   public double getAvgPosition() {
@@ -98,8 +103,8 @@ public class RotateIntakeArm extends SubsystemBase {
   }
 
   public void setReferencePeriodic() {
-    rotations = MathUtil.clamp(rotations, minRotations, maxRotations);
-    m_leftDriveController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    rotations = MathUtil.clamp(rotations, IntakeArmConstants.kMinRotations, IntakeArmConstants.kMaxRotations);
+    m_leftPIDController.setReference(rotations, CANSparkMax.ControlType.kPosition);
 
     // I don't think we need because this moter is a follower
     //m_rightDriveController.setReference(rotations, CANSparkMax.ControlType.kPosition); 

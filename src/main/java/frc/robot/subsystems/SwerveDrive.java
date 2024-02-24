@@ -29,7 +29,6 @@ public class SwerveDrive extends SubsystemBase {
             DriveConstants.kFrontLeftTurnEncoderCanId,
             DriveConstants.kTurnMotorInverted,
             DriveConstants.kFrontLeftAngularOffset);
-
     private final SwerveModule m_frontRight = new SwerveModule(
             ModulePosition.FRONT_RIGHT,
             DriveConstants.kFrontRightDriveMotorCanId,
@@ -37,7 +36,6 @@ public class SwerveDrive extends SubsystemBase {
             DriveConstants.kFrontRightTurnEncoderCanId,
             DriveConstants.kTurnMotorInverted,
             DriveConstants.kFrontRightAngularOffset);
-
     private final SwerveModule m_rearLeft = new SwerveModule(
             ModulePosition.REAR_LEFT,
             DriveConstants.kRearLeftDriveMotorCanId,
@@ -45,7 +43,6 @@ public class SwerveDrive extends SubsystemBase {
             DriveConstants.kRearLeftTurnEncoderCanId,
             DriveConstants.kTurnMotorInverted,
             DriveConstants.kRearLeftAngularOffset);
-
     private final SwerveModule m_rearRight = new SwerveModule(
             ModulePosition.REAR_RIGHT,
             DriveConstants.kRearRightDriveMotorCanId,
@@ -53,13 +50,9 @@ public class SwerveDrive extends SubsystemBase {
             DriveConstants.kRearRightTurnEncoderCanId,
             DriveConstants.kTurnMotorInverted,
             DriveConstants.kRearRightAngularOffset);
-
     private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-
     private boolean m_fieldRelative = DriveConstants.kFieldRelative;
-
-    // Odometry class for tracking robot pose
-    SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+    private SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
             m_driveKinematics,
             Rotation2d.fromDegrees(getYaw()),
             new SwerveModulePosition[] {
@@ -75,8 +68,6 @@ public class SwerveDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // Update the odometry in the periodic block
-
         // Update the odometry in the periodic block
         m_odometry.update(
                 Rotation2d.fromDegrees(getYaw()),
@@ -94,17 +85,8 @@ public class SwerveDrive extends SubsystemBase {
         double throttleSpeed = throttle * DriveConstants.kMaxSpeedMetersPerSecond;
         double strafeSpeed = strafe * DriveConstants.kMaxSpeedMetersPerSecond;
         double rotationSpeed = rotation * DriveConstants.kMaxRotationRadiansPerSecond;
-    
-        SwerveModuleState[] swerveModuleStates = m_driveKinematics.toSwerveModuleStates(
-            m_fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(throttleSpeed, strafeSpeed, rotationSpeed, Rotation2d.fromDegrees(getYaw()))
-                : new ChassisSpeeds(throttleSpeed, strafeSpeed, rotationSpeed));
-        SwerveDriveKinematics.desaturateWheelSpeeds(
-            swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
-        m_frontLeft.setDesiredState(swerveModuleStates[0]);
-        m_frontRight.setDesiredState(swerveModuleStates[1]);
-        m_rearLeft.setDesiredState(swerveModuleStates[2]);
-        m_rearRight.setDesiredState(swerveModuleStates[3]);
+
+        setRobotState(throttleSpeed, strafeSpeed, rotationSpeed);
     }
 
     public void zeroGyro() {
@@ -137,5 +119,15 @@ public class SwerveDrive extends SubsystemBase {
 
     public void toggleFieldRelative() {
         m_fieldRelative = !m_fieldRelative;
+    }
+
+    public void setRobotState(double throttleSpeed, double strafeSpeed, double rotationSpeed) {
+        SwerveModuleState[] swerveModuleStates = m_driveKinematics.toSwerveModuleStates(
+                ChassisSpeeds.fromFieldRelativeSpeeds(throttleSpeed, strafeSpeed, rotationSpeed,
+                                Rotation2d.fromDegrees(getYaw())));
+        m_frontLeft.setDesiredState(swerveModuleStates[0]);
+        m_frontRight.setDesiredState(swerveModuleStates[1]);
+        m_rearLeft.setDesiredState(swerveModuleStates[2]);
+        m_rearRight.setDesiredState(swerveModuleStates[3]);
     }
 }

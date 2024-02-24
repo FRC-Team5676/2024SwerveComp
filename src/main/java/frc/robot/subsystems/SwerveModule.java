@@ -26,7 +26,6 @@ public class SwerveModule extends SubsystemBase {
         public final RelativeEncoder m_turnEncoder;
         public final double m_turnEncoderOffsetDeg;
         public final double m_turnAngleCorrectionRad;
-        //public final double m_chassisAngularOffset;
         public final ModulePosition m_modulePosition;
 
         public boolean m_driveMotorConnected;
@@ -45,7 +44,6 @@ public class SwerveModule extends SubsystemBase {
                         double turnEncoderOffsetDeg) {
 
                 m_modulePosition = modulePosition;
-                //m_chassisAngularOffset = chassisAngularOffset;
 
                 m_driveSparkMax = new CANSparkMax(driveMotorCanChannel, MotorType.kBrushless);
                 m_turnSparkMax = new CANSparkMax(turnMotorCanChannel, MotorType.kBrushless);
@@ -84,23 +82,10 @@ public class SwerveModule extends SubsystemBase {
                 m_turnEncoder.setVelocityConversionFactor(ModuleConstants.kTurnEncoderVelocityFactor);
 
                 // Invert the turning encoder, since the output shaft rotates in the opposite
-                // direction of
-                // the steering motor in the MAXSwerve Module.
-                // m_driveEncoder.setInverted(driveMotorInverted); //Commented out (Macy)
-                //m_turnEncoder.setInverted(turnMotorInverted); //Commented out (Macy)
+                // direction of the steering motor in the Module.
                 m_turnSparkMax.setInverted(turnMotorInverted);
 
-                // Enable PID wrap around for the turning motor. This will allow the PID
-                // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
-                // to 10 degrees will go through 0 rather than the other direction which is a
-                // longer route.
-                //m_turnPIDController.setPositionPIDWrappingEnabled(true);
-                //m_turnPIDController.setPositionPIDWrappingMinInput(ModuleConstants.kTurnEncoderPositionPIDMinInput);
-                //m_turnPIDController.setPositionPIDWrappingMaxInput(ModuleConstants.kTurnEncoderPositionPIDMaxInput);
-
-                // Set the PID gains for the driving motor. Note these are example gains, and
-                // you
-                // may need to tune them for your own robot!
+                // Set the PID gains for the driving motor
                 m_drivePIDController.setP(ModuleConstants.kDriveP);
                 m_drivePIDController.setI(ModuleConstants.kDriveI);
                 m_drivePIDController.setD(ModuleConstants.kDriveD);
@@ -108,9 +93,7 @@ public class SwerveModule extends SubsystemBase {
                 m_drivePIDController.setOutputRange(ModuleConstants.kDriveMinOutput,
                                 ModuleConstants.kDriveMaxOutput);
 
-                // Set the PID gains for the turning motor. Note these are example gains, and
-                // you
-                // may need to tune them for your own robot!
+                // Set the PID gains for the turning motor
                 m_turnPIDController.setP(ModuleConstants.kTurnP);
                 m_turnPIDController.setI(ModuleConstants.kTurnI);
                 m_turnPIDController.setD(ModuleConstants.kTurnD);
