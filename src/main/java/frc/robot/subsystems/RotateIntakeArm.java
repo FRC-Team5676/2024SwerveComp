@@ -16,6 +16,7 @@ public class RotateIntakeArm extends SubsystemBase {
   private final int m_rightIntakeCanId = 23;
 
   private final RelativeEncoder m_leftDriveEncoder;
+  private final RelativeEncoder m_rightDriveEncoder;
   private final CANSparkMax m_leftDriveMotor;
   private final CANSparkMax m_rightDriveMotor;
   private final SparkPIDController m_leftDriveController;
@@ -47,6 +48,7 @@ public class RotateIntakeArm extends SubsystemBase {
     m_leftDriveController.setFF(0);
     m_leftDriveController.setOutputRange(-1, 1);
 
+    m_rightDriveEncoder = m_rightDriveMotor.getEncoder();
     m_rightDriveController = m_rightDriveMotor.getPIDController();
     m_rightDriveController.setP(0.01);
     m_rightDriveController.setI(0);
@@ -69,8 +71,18 @@ public class RotateIntakeArm extends SubsystemBase {
     return maxRotations;
   }
 
-  public double getPosition() {
+  public double getLeftPosition() {
     return m_leftDriveEncoder.getPosition();
+  }
+
+  public double getRightPosition() {
+    return m_rightDriveEncoder.getPosition();
+  }
+
+  public double getAvgPosition() {
+    double leftPosition = getLeftPosition();
+    double rightPosition = getRightPosition();
+    return (leftPosition + rightPosition) / 2;
   }
 
   public void setIntakePosition(double position) {
