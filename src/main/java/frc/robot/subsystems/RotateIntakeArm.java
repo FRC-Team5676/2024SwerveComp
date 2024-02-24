@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IntakeArmConstants;
 import frc.robot.utils.ShuffleboardContent;
@@ -54,11 +55,11 @@ public class RotateIntakeArm extends SubsystemBase {
   }
 
   public double getMinRotations() {
-    return IntakeArmConstants.kMinRotations;
+    return IntakeArmConstants.kMinPosition;
   }
 
   public double getMaxRotations() {
-    return IntakeArmConstants.kMaxRotations;
+    return IntakeArmConstants.kMaxPosition;
   }
 
   public double getPosition() {
@@ -75,19 +76,23 @@ public class RotateIntakeArm extends SubsystemBase {
 
   // Throttle controllers
   public void rotateIntake(double throttle) {
-    positionRadians += throttle * 0.3;
+    positionRadians += Units.degreesToRadians(throttle * IntakeArmConstants.throttleMultiplier);
   }
 
   public void setReferencePeriodic() {
-    positionRadians = MathUtil.clamp(positionRadians, IntakeArmConstants.kMinRotations, IntakeArmConstants.kMaxRotations);
+    positionRadians = MathUtil.clamp(positionRadians, IntakeArmConstants.kMinPosition, IntakeArmConstants.kMaxPosition);
     m_leftPIDController.setReference(positionRadians, CANSparkMax.ControlType.kPosition);
   }
 
   public void intakeNotePosition() {
-    positionRadians = IntakeArmConstants.kMinRotations;
+    positionRadians = IntakeArmConstants.kIntakePosition;
   }
 
-  public void shootNotePosition() {
-    positionRadians = 0;
+  public void shootSpeaker() {
+    positionRadians = IntakeArmConstants.kShootSpeaker;
+  }
+
+  public void shootStage() {
+    positionRadians = IntakeArmConstants.kShootStage;
   }
 }
