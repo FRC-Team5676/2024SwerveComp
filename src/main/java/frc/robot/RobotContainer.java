@@ -9,6 +9,7 @@ import frc.robot.commands.Intake.SpinUpCommand;
 import frc.robot.commands.swerve.TeleopSwerveCommand;
 import frc.robot.constants.DriveConstants;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 //import edu.wpi.first.wpilibj2.command.Commands;
@@ -97,10 +98,11 @@ public class RobotContainer {
     driver.button(0).onTrue(new InstantCommand(swerve::zeroGyro));
 
     // Intake commands
-    
     intake.setDefaultCommand(new PickupCommand(intake, operator));
 
     intakeArm.setDefaultCommand(new RotateIntakeCommand(intakeArm, operator));
+    operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(intakeArm::shootNotePosition));
+    operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(intakeArm::intakeNotePosition));
     
     spinUpWheels.setDefaultCommand(new SpinUpCommand(spinUpWheels, operator));
 

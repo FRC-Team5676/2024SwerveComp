@@ -119,5 +119,7 @@ public class ShuffleboardContent {
 
                 drLayout1.addNumber("Intake Position", () -> Units.radiansToDegrees(intakeArm.getPosition())).withPosition(1, 1)
                                 .withSize(1, 1);
+                drLayout1.addNumber("Position Setpoint", () -> Units.radiansToDegrees(intakeArm.getPositionSetpoint())).withPosition(2, 1)
+                                .withSize(1, 1);
         }
 }

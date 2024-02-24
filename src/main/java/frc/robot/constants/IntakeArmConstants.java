@@ -14,7 +14,7 @@ public final class IntakeArmConstants {
     public static final double kGearRatio = 100 / 1 * 64 / 15;
     public static final double kIntakeArmEncoderPositionFactor = (2 * Math.PI) / kGearRatio;
 
-    public static final double kP = 0.01;
+    public static final double kP = 0.2;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kIZone = 0;

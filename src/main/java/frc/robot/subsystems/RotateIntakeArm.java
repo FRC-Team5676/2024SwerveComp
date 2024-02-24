@@ -12,10 +12,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class RotateIntakeArm extends SubsystemBase {
 
-  public double rotations;
-
-  private final double m_minRotations = IntakeArmConstants.kMinRotations * IntakeArmConstants.kGearRatio;
-  private final double m_maxRotations = IntakeArmConstants.kMaxRotations * IntakeArmConstants.kGearRatio;
+  public double positionRadians;
 
   private final RelativeEncoder m_leftEncoder;
   private final CANSparkMax m_leftSparkMax;
@@ -68,18 +65,29 @@ public class RotateIntakeArm extends SubsystemBase {
     return m_leftEncoder.getPosition();
   }
 
+  public double getPositionSetpoint() {
+    return positionRadians;
+  }
+
   public void setIntakePosition(double position) {
-    rotations = position;
+    positionRadians = position;
   }
 
   // Throttle controllers
   public void rotateIntake(double throttle) {
-    rotations += throttle * 0.5;
-    setReferencePeriodic();
+    positionRadians += throttle * 0.3;
   }
 
   public void setReferencePeriodic() {
-    rotations = MathUtil.clamp(rotations, m_minRotations, m_maxRotations);
-    m_leftPIDController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+    positionRadians = MathUtil.clamp(positionRadians, IntakeArmConstants.kMinRotations, IntakeArmConstants.kMaxRotations);
+    m_leftPIDController.setReference(positionRadians, CANSparkMax.ControlType.kPosition);
+  }
+
+  public void intakeNotePosition() {
+    positionRadians = IntakeArmConstants.kMinRotations;
+  }
+
+  public void shootNotePosition() {
+    positionRadians = 0;
   }
 }
