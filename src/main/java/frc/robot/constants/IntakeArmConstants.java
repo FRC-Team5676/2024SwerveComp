@@ -8,10 +8,10 @@ public final class IntakeArmConstants {
     public static final int kLeftCanId = 21;
     public static final int kRightCanId = 23;
 
-    public static final double kMinPosition = Units.degreesToRadians(-90);
+    public static final double kMinPosition = Units.degreesToRadians(-93);
     public static final double kMaxPosition = Units.degreesToRadians(30);
 
-    public static final double kIntakePosition = Units.degreesToRadians(-90);
+    public static final double kIntakePosition = Units.degreesToRadians(-92.5);
     public static final double kShootSpeaker = Units.degreesToRadians(-69.5);
     public static final double kShootStage = Units.degreesToRadians(-50);
 
