@@ -14,6 +14,9 @@ public class RotateIntakeArm extends SubsystemBase {
 
   public double rotations;
 
+  private final double m_minRotations = IntakeArmConstants.kMinRotations * IntakeArmConstants.kGearRatio;
+  private final double m_maxRotations = IntakeArmConstants.kMaxRotations * IntakeArmConstants.kGearRatio;
+
   private final RelativeEncoder m_leftEncoder;
   private final RelativeEncoder m_rightEncoder;
   private final CANSparkMax m_leftSparkMax;
@@ -32,8 +35,6 @@ public class RotateIntakeArm extends SubsystemBase {
     m_rightSparkMax.setIdleMode(IntakeArmConstants.kMotorIdleMode);
     m_rightSparkMax.setInverted(true);
 
-    m_rightSparkMax.follow(m_leftSparkMax);
-    
     // Encoder setup
 
     m_leftEncoder = m_leftSparkMax.getEncoder();
@@ -96,17 +97,13 @@ public class RotateIntakeArm extends SubsystemBase {
 
   // Throttle controllers
   public void rotateIntake(double throttle) {
-    //m_leftDriveMotor.set(throttle);
-    //m_rightDriveMotor.set(throttle);
-    rotations += throttle;
+    rotations += throttle * 0.5;
     setReferencePeriodic();
   }
 
   public void setReferencePeriodic() {
-    rotations = MathUtil.clamp(rotations, IntakeArmConstants.kMinRotations, IntakeArmConstants.kMaxRotations);
+    rotations = MathUtil.clamp(rotations, m_minRotations, m_maxRotations);
     m_leftPIDController.setReference(rotations, CANSparkMax.ControlType.kPosition);
-
-    // I don't think we need because this moter is a follower
-    //m_rightDriveController.setReference(rotations, CANSparkMax.ControlType.kPosition); 
+    m_rightPIDController.setReference(rotations, CANSparkMax.ControlType.kPosition); 
   }
 }

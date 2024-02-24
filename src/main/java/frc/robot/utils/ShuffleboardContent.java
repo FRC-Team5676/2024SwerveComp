@@ -117,11 +117,11 @@ public class ShuffleboardContent {
         public static void initIntakeArm(RotateIntakeArm intakeArm) {
                 ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
 
-                drLayout1.addNumber("Left Position", () -> intakeArm.getLeftPosition()).withPosition(1, 1)
+                drLayout1.addNumber("Left Position", () -> Units.radiansToDegrees(intakeArm.getLeftPosition())).withPosition(1, 1)
                                 .withSize(1, 1);
-                drLayout1.addNumber("Right Position", () -> intakeArm.getRightPosition()).withPosition(2, 1)
+                drLayout1.addNumber("Right Position", () -> Units.radiansToDegrees(intakeArm.getRightPosition())).withPosition(2, 1)
                                 .withSize(1, 1);
-                drLayout1.addNumber("Avg Position", () -> intakeArm.getAvgPosition()).withPosition(3, 1)
+                drLayout1.addNumber("Avg Position", () -> Units.radiansToDegrees(intakeArm.getAvgPosition())).withPosition(3, 1)
                                 .withSize(1, 1);
         }
 }

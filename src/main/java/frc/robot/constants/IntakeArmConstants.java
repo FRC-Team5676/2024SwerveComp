@@ -5,14 +5,13 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.util.Units;
 
 public final class IntakeArmConstants {
-    private static final double kGearRatio = 100 / 1 * 64 / 15;
-
     public static final int kLeftCanId = 21;
     public static final int kRightCanId = 23;
 
-    public static final double kMinRotations = Units.degreesToRadians(-30);
-    public static final double kMaxRotations = Units.degreesToRadians(90);
+    public static final double kMinRotations = Units.degreesToRadians(-90);
+    public static final double kMaxRotations = Units.degreesToRadians(30);
 
+    public static final double kGearRatio = 100 / 1 * 64 / 15;
     public static final double kIntakeArmEncoderPositionFactor = (2 * Math.PI) / kGearRatio;
 
     public static final double kP = 0.01;
