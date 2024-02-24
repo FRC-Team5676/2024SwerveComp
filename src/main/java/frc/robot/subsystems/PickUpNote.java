@@ -13,8 +13,7 @@ public class PickUpNote extends SubsystemBase {
   public PickUpNote() {
     m_noteMotor.restoreFactoryDefaults();
     m_noteMotor.setInverted(true);
-    m_noteMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
-
+    m_noteMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
   @Override

@@ -30,8 +30,8 @@ public class SpinUp extends SubsystemBase {
     lowershooterMotor.setInverted(true);
     uppershooterMotor.setInverted(true);
 
-    uppershooterMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    lowershooterMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    uppershooterMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    lowershooterMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     uppershooterEncoder.setPosition(0);
     lowershooterEncoder.setPosition(0);

@@ -31,10 +31,8 @@ public class RotateIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     double throttle = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis(); // Throttles for positive and negative signs
-    m_controlArm.rotateIntake(throttle * 0.30);
-    
+    m_controlArm.rotateIntake(throttle * 0.5);
   }
   
   

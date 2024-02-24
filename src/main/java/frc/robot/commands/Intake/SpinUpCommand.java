@@ -30,10 +30,8 @@ public class SpinUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     double throttle = m_controller.getLeftY(); // Left joystick
-    m_spinupwheels.SpinUpWheels(throttle);
-
+    m_spinupwheels.SpinUpWheels(throttle * 0.55);
   }
 
   /*public void TurnOnTurnOff(boolean ison) {

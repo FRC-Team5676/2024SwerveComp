@@ -33,7 +33,7 @@ public class PickupCommand extends Command {
   public void execute() {
 
     double throttle = m_controller.getRightY(); // Right joystick
-    m_noteMotor.intake(throttle * 0.3);
+    m_noteMotor.intake(throttle * 0.4);
 
   }
 
