@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 // Green wheels; the intake
 
 package frc.robot.commands.Intake;
@@ -12,9 +8,9 @@ import frc.robot.subsystems.PickUpNote;
 
 public class PickupCommand extends Command {
 
-  /** Creates a new PickupCommand. */
-  private final PickUpNote m_noteMotor;
-  private final CommandXboxController m_controller;
+    /** Creates a new PickupCommand. */
+    private final PickUpNote m_noteMotor;
+    private final CommandXboxController m_controller;
 
   public PickupCommand(PickUpNote noteMotor, CommandXboxController controller) {
     m_noteMotor = noteMotor;
@@ -23,28 +19,28 @@ public class PickupCommand extends Command {
     addRequirements(noteMotor);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
 
-    double throttle = m_controller.getRightY(); // Right joystick
-    m_noteMotor.intake(throttle * 0.4);
+        double throttle = m_controller.getRightY(); // Right joystick
+        m_noteMotor.intake(throttle * 0.4);
 
-  }
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

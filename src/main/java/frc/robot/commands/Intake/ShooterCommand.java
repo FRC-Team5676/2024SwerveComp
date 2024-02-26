@@ -4,21 +4,22 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.SpinUp;
+import frc.robot.subsystems.Shooter;
 
-public class SpinUpCommand extends Command {
+public class ShooterCommand extends Command {
 
-  private final SpinUp m_spinupwheels;
+  private final Shooter m_spinupwheels;
   private final CommandXboxController m_controller;
 
-  //private boolean ison = false;
+  private boolean m_isOn = false;
+  private boolean m_isOnBackwards = false;
 
   /** Driver control */
-  public SpinUpCommand(SpinUp spinwheels, CommandXboxController controller) {
-    m_spinupwheels = spinwheels;
+  public ShooterCommand(Shooter shooter, CommandXboxController controller) {
+    m_spinupwheels = shooter;
     m_controller = controller;
 
-    addRequirements(spinwheels);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -30,13 +31,14 @@ public class SpinUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double throttle = m_controller.getLeftY(); // Left joystick
-    m_spinupwheels.SpinUpWheels(throttle * 0.55);
+    if (m_controller.rightBumper().getAsBoolean()) {
+      m_isOn = !m_isOn;
+      m_spinupwheels.runWheels();
+    } else if (m_controller.leftBumper().getAsBoolean()) {
+      m_isOnBackwards = !m_isOnBackwards;
+      m_spinupwheels.runWheelsBackwards();
+    }
   }
-
-  /*public void TurnOnTurnOff(boolean ison) {
-    ison = !ison;
-  }*/
 
   // Called once the command ends or is interrupted.
   @Override
@@ -48,5 +50,4 @@ public class SpinUpCommand extends Command {
   public boolean isFinished() {
     return false;
   }
-
 }
