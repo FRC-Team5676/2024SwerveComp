@@ -3,6 +3,7 @@ package frc.robot;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utils.AutonManager;
+import frc.robot.commands.Climb.ClimbCommand;
 import frc.robot.commands.Intake.PickupCommand;
 import frc.robot.commands.Intake.RotateIntakeCommand;
 import frc.robot.commands.swerve.TeleopSwerveCommand;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.PickUpNote;
 import frc.robot.subsystems.RotateIntakeArm;
 
@@ -27,6 +29,7 @@ public class RobotContainer {
   private final RotateIntakeArm intakeArm = new RotateIntakeArm(); // Arm controller
   private final Shooter shooterWheels = new Shooter(); // Pickup intake controller
   private final PickUpNote intakeWheels = new PickUpNote(); // Cannon controller
+  private final Climb climb = new Climb(); // Climber
 
   public RobotContainer() {
     addAutonomousChoices();
@@ -62,13 +65,19 @@ public class RobotContainer {
     // Intake commands
     intakeWheels.setDefaultCommand(new PickupCommand(intakeWheels, operator));
 
+    // Rotate commands
     intakeArm.setDefaultCommand(new RotateIntakeCommand(intakeArm, operator));
     operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(intakeArm::shootSpeaker));
     operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(intakeArm::shootStage));
     operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(intakeArm::intakeNotePosition));
     operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::intakeZeroPosition));
 
+    // Shoot commands
     operator.button(XboxController.Button.kRightBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheels()));
     operator.button(XboxController.Button.kLeftBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheelsBackwards()));
+
+    // Climb commands
+    climb.setDefaultCommand(new ClimbCommand(climb, operator));
+
     };
   }

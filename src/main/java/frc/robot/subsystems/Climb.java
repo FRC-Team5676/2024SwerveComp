@@ -1,25 +1,36 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Climb extends SubsystemBase{
+public class Climb extends SubsystemBase {
 
-    ///////////////////////////////// Can ID is wrong! //////////////////////////////////
+  private final CANSparkMax m_leftClimb;
+  private final CANSparkMax m_rightClimb;
 
-    private final CANSparkMax m_climb = new CANSparkMax(43, MotorType.kBrushless);
+  public double climb;
 
-    public double climb;
-    
+  public Climb() {
+    m_leftClimb = new CANSparkMax(57, MotorType.kBrushless);
+    m_leftClimb.restoreFactoryDefaults();
+    m_leftClimb.setIdleMode(IdleMode.kBrake);
 
-    public void climb(double throttle){
-        if (Math.abs(throttle) > 0.05) { // Stops drift on climber
-          m_climb.set(throttle);
-        }
-        else {
-          m_climb.set(0);
-        }
-      }
+    m_rightClimb = new CANSparkMax(58, MotorType.kBrushless);
+    m_rightClimb.restoreFactoryDefaults();
+    m_rightClimb.setIdleMode(IdleMode.kBrake);
+
+    m_rightClimb.follow(m_leftClimb);
+
+  }
+
+  public void climb(double throttle) {
+    if (Math.abs(throttle) > 0.05) { // Stops drift on climber
+      m_leftClimb.set(throttle);
+    } else {
+      m_leftClimb.set(0);
+    }
+  }
 }

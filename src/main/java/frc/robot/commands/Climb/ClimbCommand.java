@@ -30,7 +30,7 @@ public class ClimbCommand extends Command {
   @Override
   public void execute() {
 
-    double throttle = m_controller.getLeftX(); // Left joystick side to side
+    double throttle = m_controller.getLeftY(); // Left joystick side to side
     m_climb.climb(throttle);
 
   }
@@ -42,6 +42,6 @@ public class ClimbCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
