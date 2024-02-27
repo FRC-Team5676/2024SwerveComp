@@ -84,6 +84,10 @@ public class RotateIntakeArm extends SubsystemBase {
     m_leftPIDController.setReference(positionRadians, CANSparkMax.ControlType.kPosition);
   }
 
+  public void intakeZeroPosition() {
+    positionRadians = IntakeArmConstants.kZeroPosition;
+  }
+
   public void intakeNotePosition() {
     positionRadians = IntakeArmConstants.kIntakePosition;
   }

@@ -63,9 +63,10 @@ public class RobotContainer {
     intakeWheels.setDefaultCommand(new PickupCommand(intakeWheels, operator));
 
     intakeArm.setDefaultCommand(new RotateIntakeCommand(intakeArm, operator));
-    operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(intakeArm::shootSpeaker));
-    operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::shootStage));
-    operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(intakeArm::intakeNotePosition));
+    operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(intakeArm::shootSpeaker));
+    operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(intakeArm::shootStage));
+    operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(intakeArm::intakeNotePosition));
+    operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::intakeZeroPosition));
 
     operator.button(XboxController.Button.kRightBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheels()));
     operator.button(XboxController.Button.kLeftBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheelsBackwards()));

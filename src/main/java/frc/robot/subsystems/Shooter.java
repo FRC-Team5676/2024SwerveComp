@@ -8,6 +8,9 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Shooter extends SubsystemBase {
 
+  private final double shootSpeedForward = 0.55;
+  private final double shootSpeedBackwards = -0.1;
+
   private final CANSparkMax uppershooterMotor = new CANSparkMax(62, MotorType.kBrushless);
   private final CANSparkMax lowershooterMotor = new CANSparkMax(59, MotorType.kBrushless);
 
@@ -19,20 +22,20 @@ public class Shooter extends SubsystemBase {
     uppershooterMotor.restoreFactoryDefaults();
     lowershooterMotor.restoreFactoryDefaults();
 
-    uppershooterMotor.setInverted(true);
-
     uppershooterMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     lowershooterMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-    lowershooterMotor.follow(lowershooterMotor, true);
+    uppershooterMotor.setInverted(false);
+
+    lowershooterMotor.follow(uppershooterMotor, false);
   }
 
   @Override
   public void periodic() {
     if (m_isOn) {
-      uppershooterMotor.set(0.55);
+      uppershooterMotor.set(shootSpeedForward);
     } else if (m_isOnBackwards) {
-      uppershooterMotor.set(-0.1);
+      uppershooterMotor.set(shootSpeedBackwards);
     } else {
       uppershooterMotor.set(0);
     }

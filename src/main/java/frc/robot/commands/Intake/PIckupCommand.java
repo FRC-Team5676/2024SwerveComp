@@ -28,7 +28,7 @@ public class PickupCommand extends Command {
     @Override
     public void execute() {
 
-        double throttle = m_controller.getRightY(); // Right joystick
+      double throttle = m_controller.getLeftTriggerAxis() - m_controller.getRightTriggerAxis(); // Throttles for positive and negative signs
         m_noteMotor.intake(throttle * 0.4);
 
     }

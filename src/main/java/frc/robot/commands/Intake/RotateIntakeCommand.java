@@ -9,15 +9,15 @@ import frc.robot.subsystems.RotateIntakeArm;
 
 public class RotateIntakeCommand extends Command {
 
-  private final RotateIntakeArm m_controlArm;
+  private final RotateIntakeArm m_intakeArm;
   private final CommandXboxController m_controller;
 
   /** Driver control */
-  public RotateIntakeCommand(RotateIntakeArm controlArm, CommandXboxController controller) {
-      m_controlArm = controlArm;
+  public RotateIntakeCommand(RotateIntakeArm intakeArm, CommandXboxController controller) {
+      m_intakeArm = intakeArm;
       m_controller = controller;
 
-      addRequirements(controlArm);
+      addRequirements(intakeArm);
   }
 
 
@@ -31,8 +31,8 @@ public class RotateIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double throttle = m_controller.getRightTriggerAxis() - m_controller.getLeftTriggerAxis(); // Throttles for positive and negative signs
-    m_controlArm.rotateIntake(throttle);
+    double throttle = m_controller.getRightY();
+    m_intakeArm.rotateIntake(throttle);
   }
   
   
