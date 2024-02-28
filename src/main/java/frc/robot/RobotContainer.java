@@ -52,6 +52,8 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+
+    // Swerve drive commands
     swerve.setDefaultCommand(
         new TeleopSwerveCommand(
             swerve,
@@ -74,10 +76,11 @@ public class RobotContainer {
 
     // Shoot commands
     operator.button(XboxController.Button.kRightBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheels()));
-    operator.button(XboxController.Button.kLeftBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheelsBackwards()));
+    operator.button(XboxController.Button.kLeftBumper.value)
+        .onTrue(Commands.runOnce(() -> shooterWheels.runWheelsBackwards()));
 
     // Climb commands
     climb.setDefaultCommand(new ClimbCommand(climb, operator));
 
-    };
-  }
+  };
+}
