@@ -76,7 +76,9 @@ public class RotateIntakeArm extends SubsystemBase {
 
   // Throttle controllers
   public void rotateIntake(double throttle) {
-    positionRadians += Units.degreesToRadians(throttle * IntakeArmConstants.throttleMultiplier);
+    if (Math.abs(throttle) > 0.05) {
+      positionRadians += Units.degreesToRadians(throttle * IntakeArmConstants.throttleMultiplier);
+    }
   }
 
   public void setReferencePeriodic() {
