@@ -32,6 +32,8 @@ public class SwerveModule extends SubsystemBase {
         public boolean m_turnMotorConnected;
         public boolean m_turnCoderConnected;
 
+        private SwerveModulePosition m_currentPosition = new SwerveModulePosition();
+        private SwerveModuleState m_currentState = new SwerveModuleState();
         private final SparkPIDController m_drivePIDController;
         private final SparkPIDController m_turnPIDController;
 
@@ -115,7 +117,7 @@ public class SwerveModule extends SubsystemBase {
                 m_turnAngleCorrectionRad = Math.abs(getAbsolutePositionRad());
 
                 m_driveEncoder.setPosition(0);
-            
+
                 checkCAN();
 
                 ShuffleboardContent.initDriveShuffleboard(this);
@@ -133,21 +135,27 @@ public class SwerveModule extends SubsystemBase {
 
                 // Optimize the reference state to avoid spinning further than 90 degrees.
                 SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
-                                new Rotation2d(m_turnEncoder.getPosition()));
+                                new Rotation2d(m_turnEncoder.getPosition() + m_turnAngleCorrectionRad));
 
                 // Command driving and turning SPARKS MAX towards their respective setpoints.
                 m_drivePIDController.setReference(optimizedDesiredState.speedMetersPerSecond,
                                 CANSparkMax.ControlType.kVelocity);
                 m_turnPIDController.setReference(optimizedDesiredState.angle.getRadians(),
                                 CANSparkMax.ControlType.kPosition);
+
+                // Set current state and position
+                m_currentState = optimizedDesiredState;
+                m_currentPosition = new SwerveModulePosition(
+                                m_currentPosition.distanceMeters + (m_currentState.speedMetersPerSecond * 0.02),
+                                m_currentState.angle);
         }
 
         public SwerveModulePosition getPosition() {
-                // Apply chassis angular offset to the encoder position to get the position
-                // relative to the chassis.
-                return new SwerveModulePosition(
-                                m_driveEncoder.getPosition(),
-                                new Rotation2d(m_turnEncoder.getPosition() + m_turnAngleCorrectionRad));
+                return m_currentPosition;
+        }
+
+        public SwerveModuleState getState() {
+                return m_currentState;
         }
 
         private boolean checkCAN() {
@@ -166,9 +174,10 @@ public class SwerveModule extends SubsystemBase {
 
         public double getTurnPositionRad() {
                 double conv = 0;
-                double fullPosDeg = Units.radiansToDegrees(m_turnEncoder.getPosition());
-                
-                if (fullPosDeg < 0) conv = 360;
+                double fullPosDeg = Units.radiansToDegrees(m_turnEncoder.getPosition() + m_turnAngleCorrectionRad);
+
+                if (fullPosDeg < 0)
+                        conv = 360;
 
                 double posDeg = conv + fullPosDeg % 360;
                 return Units.degreesToRadians(posDeg);
