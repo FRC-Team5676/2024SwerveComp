@@ -62,7 +62,7 @@ public class RobotContainer {
             () -> -MathUtil.applyDeadband(driver.getZ(), DriveConstants.kRotationDeadband)));
 
     driver.button(1).onTrue(new InstantCommand(swerve::toggleFieldRelative));
-    driver.button(0).onTrue(new InstantCommand(swerve::zeroGyro));
+    driver.button(2).onTrue(new InstantCommand(swerve::zeroGyro));
 
     // Intake commands
     intakeWheels.setDefaultCommand(new PickupCommand(intakeWheels, operator));
