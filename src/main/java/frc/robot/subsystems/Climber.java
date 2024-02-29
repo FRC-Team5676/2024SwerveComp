@@ -6,14 +6,14 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Climb extends SubsystemBase {
+public class Climber extends SubsystemBase {
 
   private final CANSparkMax m_leftClimb;
   private final CANSparkMax m_rightClimb;
 
   public double climb;
 
-  public Climb() {
+  public Climber() {
     m_leftClimb = new CANSparkMax(57, MotorType.kBrushless);
     m_leftClimb.restoreFactoryDefaults();
     m_leftClimb.setIdleMode(IdleMode.kBrake);

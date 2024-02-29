@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class Shooter extends SubsystemBase {
+public class ShooterWheels extends SubsystemBase {
 
   private final double shootSpeedForward = 0.55;
   private final double shootSpeedBackwards = -0.1;
@@ -17,7 +17,7 @@ public class Shooter extends SubsystemBase {
   private static boolean m_isOn = false;
   private static boolean m_isOnBackwards = false;
 
-  public Shooter() {
+  public ShooterWheels() {
 
     uppershooterMotor.restoreFactoryDefaults();
     lowershooterMotor.restoreFactoryDefaults();

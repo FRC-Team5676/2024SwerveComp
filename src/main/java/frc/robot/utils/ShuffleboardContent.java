@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.constants.ModuleConstants;
-import frc.robot.subsystems.RotateIntakeArm;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.SwerveModule;
 
@@ -114,7 +114,7 @@ public class ShuffleboardContent {
                                 .withSize(1, 1);
         }
         
-        public static void initIntakeArm(RotateIntakeArm intakeArm) {
+        public static void initIntakeArm(IntakeArm intakeArm) {
                 ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
 
                 drLayout1.addNumber("Intake Position", () -> Units.radiansToDegrees(intakeArm.getPosition())).withPosition(1, 1)

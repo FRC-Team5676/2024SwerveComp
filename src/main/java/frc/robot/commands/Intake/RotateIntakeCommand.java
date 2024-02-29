@@ -4,16 +4,16 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.RotateIntakeArm;
+import frc.robot.subsystems.IntakeArm;
 
 
 public class RotateIntakeCommand extends Command {
 
-  private final RotateIntakeArm m_intakeArm;
+  private final IntakeArm m_intakeArm;
   private final CommandXboxController m_controller;
 
   /** Driver control */
-  public RotateIntakeCommand(RotateIntakeArm intakeArm, CommandXboxController controller) {
+  public RotateIntakeCommand(IntakeArm intakeArm, CommandXboxController controller) {
       m_intakeArm = intakeArm;
       m_controller = controller;
 

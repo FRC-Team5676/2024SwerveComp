@@ -4,18 +4,18 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterWheels;
 
 public class ShooterCommand extends Command {
 
-  private final Shooter m_spinupwheels;
+  private final ShooterWheels m_spinupwheels;
   private final CommandXboxController m_controller;
 
   private boolean m_isOn = false;
   private boolean m_isOnBackwards = false;
 
   /** Driver control */
-  public ShooterCommand(Shooter shooter, CommandXboxController controller) {
+  public ShooterCommand(ShooterWheels shooter, CommandXboxController controller) {
     m_spinupwheels = shooter;
     m_controller = controller;
 

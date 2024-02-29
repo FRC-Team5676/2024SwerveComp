@@ -4,15 +4,15 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.PickUpNote;
+import frc.robot.subsystems.IntakeWheels;
 
 public class PickupCommand extends Command {
 
     /** Creates a new PickupCommand. */
-    private final PickUpNote m_noteMotor;
+    private final IntakeWheels m_noteMotor;
     private final CommandXboxController m_controller;
 
-  public PickupCommand(PickUpNote noteMotor, CommandXboxController controller) {
+  public PickupCommand(IntakeWheels noteMotor, CommandXboxController controller) {
     m_noteMotor = noteMotor;
     m_controller = controller;
 

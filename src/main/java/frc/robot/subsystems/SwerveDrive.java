@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.DriveConstants;
+import frc.robot.constants.ModuleConstants;
 import frc.robot.utils.Enums.ModulePosition;
 import frc.robot.utils.ShuffleboardContent;
 
@@ -34,8 +35,10 @@ public class SwerveDrive extends SubsystemBase {
     private static final double m_moduleOffset = new Translation2d(DriveConstants.kRobotWidth / 2,
             DriveConstants.kRobotLength / 2).getNorm();
     private static final HolonomicPathFollowerConfig m_pathFollowerConfig = new HolonomicPathFollowerConfig(
-            new PIDConstants(5.0, 0, 0), // Translation constants
-            new PIDConstants(5.0, 0, 0), // Rotation constants
+            new PIDConstants(ModuleConstants.kDriveP, ModuleConstants.kDriveI, ModuleConstants.kDriveD,
+                    ModuleConstants.kDriveFF), // Translation constants
+            new PIDConstants(ModuleConstants.kTurnD, ModuleConstants.kTurnI, ModuleConstants.kTurnD,
+                    ModuleConstants.kTurnFF), // Rotation constants
             DriveConstants.kMaxSpeedMetersPerSecond,
             m_moduleOffset, // Drive base radius (distance from center to furthest module)
             new ReplanningConfig());
