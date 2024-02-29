@@ -8,7 +8,7 @@ import frc.robot.utils.ShuffleboardContent;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ShooterRotate extends SubsystemBase {
@@ -16,11 +16,11 @@ public class ShooterRotate extends SubsystemBase {
   public double positionRadians;
 
   private final RelativeEncoder m_encoder;
-  private final CANSparkMax m_sparkMax;
+  private final CANSparkFlex m_sparkMax;
   private final SparkPIDController m_controller;
 
   public ShooterRotate() {
-    m_sparkMax = new CANSparkMax(ShooterRotateConstants.kCanId, MotorType.kBrushless);
+    m_sparkMax = new CANSparkFlex(ShooterRotateConstants.kCanId, MotorType.kBrushless);
     m_sparkMax.restoreFactoryDefaults();
     m_sparkMax.setIdleMode(ShooterRotateConstants.kMotorIdleMode);
 
@@ -76,7 +76,7 @@ public class ShooterRotate extends SubsystemBase {
 
   public void setReferencePeriodic() {
     positionRadians = MathUtil.clamp(positionRadians, ShooterRotateConstants.kMinPosition, ShooterRotateConstants.kMaxPosition);
-    m_controller.setReference(positionRadians, CANSparkMax.ControlType.kPosition);
+    m_controller.setReference(positionRadians, CANSparkFlex.ControlType.kPosition);
   }
 
   public void intakeZeroPosition() {

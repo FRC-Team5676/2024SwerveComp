@@ -1,19 +1,19 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeWheels extends SubsystemBase {
 
-  private final CANSparkMax m_intakeMotor = new CANSparkMax(61, MotorType.kBrushless);
+  private final CANSparkFlex m_intakeMotor = new CANSparkFlex(61, MotorType.kBrushless);
 
   /** Creates a new PickUpNote. */
   public IntakeWheels() {
     m_intakeMotor.restoreFactoryDefaults();
     m_intakeMotor.setInverted(true);
-    m_intakeMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_intakeMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
 
   @Override
