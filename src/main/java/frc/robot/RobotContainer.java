@@ -83,7 +83,9 @@ public class RobotContainer {
     //shooterRotate.setDefaultCommand(new ShooterRotateCommand(shooterRotate, operator));
 
     // Climb commands
-    climb.setDefaultCommand(new ClimbCommand(climb, operator));
-
+    driver.button(3).onTrue(new InstantCommand(climb::climbDown));
+    driver.button(3).onFalse(new InstantCommand(climb::climbStop));
+    driver.button(4).onTrue(new InstantCommand(climb::climbUp));
+    driver.button(4).onFalse(new InstantCommand(climb::climbStop));
   };
 }

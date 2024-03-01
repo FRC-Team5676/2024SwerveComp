@@ -26,6 +26,18 @@ public class Climber extends SubsystemBase {
 
   }
 
+  public void climbUp() {
+    m_leftClimb.set(0.50);
+  }
+
+  public void climbDown() {
+    m_leftClimb.set(-0.50);
+  }
+
+  public void climbStop() {
+    m_leftClimb.set(0);
+  }
+
   public void climb(double throttle) {
     if (Math.abs(throttle) > 0.05) { // Stops drift on climber
       m_leftClimb.set(throttle);
