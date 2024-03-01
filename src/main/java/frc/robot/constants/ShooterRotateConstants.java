@@ -7,8 +7,8 @@ import edu.wpi.first.math.util.Units;
 public final class ShooterRotateConstants {
     public static final int kCanId = 60;
 
-    public static final double kMinPosition = Units.degreesToRadians(0);
-    public static final double kMaxPosition = Units.degreesToRadians(30);
+    public static final double kMinPosition = Units.degreesToRadians(-40);
+    public static final double kMaxPosition = Units.degreesToRadians(0);
 
     public static final double kZeroPosition = Units.degreesToRadians(0);
     public static final double kShootSpeaker = Units.degreesToRadians(15);
