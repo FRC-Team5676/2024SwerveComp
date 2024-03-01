@@ -1,19 +1,19 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class PickUpNote extends SubsystemBase {
+public class IntakeWheels extends SubsystemBase {
 
-  private final CANSparkMax m_noteMotor = new CANSparkMax(61, MotorType.kBrushless);
+  private final CANSparkFlex m_intakeMotor = new CANSparkFlex(61, MotorType.kBrushless);
 
   /** Creates a new PickUpNote. */
-  public PickUpNote() {
-    m_noteMotor.restoreFactoryDefaults();
-    m_noteMotor.setInverted(true);
-    m_noteMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+  public IntakeWheels() {
+    m_intakeMotor.restoreFactoryDefaults();
+    m_intakeMotor.setInverted(true);
+    m_intakeMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
 
   @Override
@@ -24,10 +24,10 @@ public class PickUpNote extends SubsystemBase {
 
   public void intake(double throttle){
     if (Math.abs(throttle) > 0.05) { // Stops drift on green wheels
-      m_noteMotor.set(throttle);
+      m_intakeMotor.set(throttle);
     }
     else {
-      m_noteMotor.set(0);
+      m_intakeMotor.set(0);
     }
   }
 }

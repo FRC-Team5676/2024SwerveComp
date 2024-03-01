@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.constants.ModuleConstants;
-import frc.robot.subsystems.RotateIntakeArm;
+import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.ShooterRotate;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.SwerveModule;
 
@@ -114,12 +115,21 @@ public class ShuffleboardContent {
                                 .withSize(1, 1);
         }
         
-        public static void initIntakeArm(RotateIntakeArm intakeArm) {
+        public static void initIntakeArm(IntakeArm intakeArm) {
                 ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
 
                 drLayout1.addNumber("Intake Position", () -> Units.radiansToDegrees(intakeArm.getPosition())).withPosition(1, 1)
                                 .withSize(1, 1);
                 drLayout1.addNumber("Position Setpoint", () -> Units.radiansToDegrees(intakeArm.getPositionSetpoint())).withPosition(2, 1)
+                                .withSize(1, 1);
+        }
+
+        public static void initShooterRotate(ShooterRotate shooterRotate) {
+                ShuffleboardTab drLayout1 = Shuffleboard.getTab("Shooter Rotate");
+
+                drLayout1.addNumber("Shooter Position", () -> Units.radiansToDegrees(shooterRotate.getPosition())).withPosition(1, 1)
+                                .withSize(1, 1);
+                drLayout1.addNumber("Position Setpoint", () -> Units.radiansToDegrees(shooterRotate.getPositionSetpoint())).withPosition(2, 1)
                                 .withSize(1, 1);
         }
 }

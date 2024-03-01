@@ -4,20 +4,20 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.ShooterRotate;
 
 
-public class RotateIntakeCommand extends Command {
+public class ShooterRotateCommand extends Command {
 
-  private final IntakeArm m_intakeArm;
+  private final ShooterRotate m_shooterRotate;
   private final CommandXboxController m_controller;
 
   /** Driver control */
-  public RotateIntakeCommand(IntakeArm intakeArm, CommandXboxController controller) {
-      m_intakeArm = intakeArm;
+  public ShooterRotateCommand(ShooterRotate shooterRotate, CommandXboxController controller) {
+      m_shooterRotate = shooterRotate;
       m_controller = controller;
 
-      addRequirements(intakeArm);
+      addRequirements(shooterRotate);
   }
 
 
@@ -31,8 +31,8 @@ public class RotateIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double throttle = m_controller.getRightY();
-    m_intakeArm.rotateIntake(throttle);
+    double throttle = m_controller.getLeftY();
+    m_shooterRotate.rotateShooter(throttle);
   }
   
   

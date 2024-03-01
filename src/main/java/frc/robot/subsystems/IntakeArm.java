@@ -11,7 +11,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class RotateIntakeArm extends SubsystemBase {
+public class IntakeArm extends SubsystemBase {
 
   public double positionRadians;
 
@@ -20,7 +20,7 @@ public class RotateIntakeArm extends SubsystemBase {
   private final CANSparkMax m_rightSparkMax;
   private final SparkPIDController m_leftPIDController;
 
-  public RotateIntakeArm() {
+  public IntakeArm() {
     m_leftSparkMax = new CANSparkMax(IntakeArmConstants.kLeftCanId, MotorType.kBrushless);
     m_leftSparkMax.restoreFactoryDefaults();
     m_leftSparkMax.setIdleMode(IntakeArmConstants.kMotorIdleMode);

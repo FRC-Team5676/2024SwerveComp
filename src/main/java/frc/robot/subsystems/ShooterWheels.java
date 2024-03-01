@@ -3,27 +3,28 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMax;
+
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class Shooter extends SubsystemBase {
+public class ShooterWheels extends SubsystemBase {
 
   private final double shootSpeedForward = 0.55;
   private final double shootSpeedBackwards = -0.1;
 
-  private final CANSparkMax uppershooterMotor = new CANSparkMax(62, MotorType.kBrushless);
-  private final CANSparkMax lowershooterMotor = new CANSparkMax(59, MotorType.kBrushless);
+  private final CANSparkFlex uppershooterMotor = new CANSparkFlex(62, MotorType.kBrushless);
+  private final CANSparkFlex lowershooterMotor = new CANSparkFlex(59, MotorType.kBrushless);
 
   private static boolean m_isOn = false;
   private static boolean m_isOnBackwards = false;
 
-  public Shooter() {
+  public ShooterWheels() {
 
     uppershooterMotor.restoreFactoryDefaults();
     lowershooterMotor.restoreFactoryDefaults();
 
-    uppershooterMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    lowershooterMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    uppershooterMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
+    lowershooterMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
 
     uppershooterMotor.setInverted(false);
 

@@ -1,11 +1,12 @@
 package frc.robot;
 
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterWheels;
 import frc.robot.utils.AutonManager;
 import frc.robot.commands.Climb.ClimbCommand;
 import frc.robot.commands.Intake.PickupCommand;
 import frc.robot.commands.Intake.RotateIntakeCommand;
+import frc.robot.commands.auto.AutoRoutines;
 import frc.robot.commands.swerve.TeleopSwerveCommand;
 import frc.robot.constants.DriveConstants;
 import edu.wpi.first.math.MathUtil;
@@ -15,9 +16,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.PickUpNote;
-import frc.robot.subsystems.RotateIntakeArm;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.IntakeWheels;
+import frc.robot.subsystems.IntakeArm;
 
 public class RobotContainer {
   public final SwerveDrive swerve = new SwerveDrive(); // Swerve drive system
@@ -26,10 +27,10 @@ public class RobotContainer {
   private final CommandJoystick driver = new CommandJoystick(1);
   private final CommandXboxController operator = new CommandXboxController(0);
 
-  private final RotateIntakeArm intakeArm = new RotateIntakeArm(); // Arm controller
-  private final Shooter shooterWheels = new Shooter(); // Pickup intake controller
-  private final PickUpNote intakeWheels = new PickUpNote(); // Cannon controller
-  private final Climb climb = new Climb(); // Climber
+  private final IntakeArm intakeArm = new IntakeArm(); // Arm controller
+  private final ShooterWheels shooterWheels = new ShooterWheels(); // Pickup intake controller
+  private final IntakeWheels intakeWheels = new IntakeWheels(); // Cannon controller
+  private final Climber climb = new Climber(); // Climber
 
   public RobotContainer() {
     addAutonomousChoices();
@@ -39,16 +40,12 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
+    return autonManager.getSelected();
   }
 
   private void addAutonomousChoices() {
-    /*
-     * autonManager.addDefaultOption("Set Cone and Leave",
-     * AutoRoutines.PlaceConeAndLeave(lowerArm, upperArm, intakeArm,
-     * swerve, xController, yController, zController));
-     */
+    autonManager.addDefaultOption("Shoot Note and Leave",
+        AutoRoutines.ShootNoteAndLeave(shooterWheels, intakeWheels, intakeArm, swerve));
   }
 
   private void configureButtonBindings() {

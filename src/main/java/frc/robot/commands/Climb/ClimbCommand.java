@@ -8,14 +8,14 @@ package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Climber;
 
 public class ClimbCommand extends Command {
   /** Creates a new Climb. */
-  private final Climb m_climb;
+  private final Climber m_climb;
   private final CommandXboxController m_controller;
 
-  public ClimbCommand(Climb climb, CommandXboxController controller) {
+  public ClimbCommand(Climber climb, CommandXboxController controller) {
     m_climb = climb;
     m_controller = controller;
 
