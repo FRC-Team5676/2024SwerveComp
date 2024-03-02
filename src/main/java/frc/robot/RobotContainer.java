@@ -11,7 +11,6 @@ import frc.robot.constants.DriveConstants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -72,7 +71,8 @@ public class RobotContainer {
     operator.button(XboxController.Button.kStart.value).onTrue(new InstantCommand(intakeArm::shootAmp));
 
     // Shoot commands
-    operator.button(XboxController.Button.kRightBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheels()));
+    operator.button(XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(shooterWheels::runWheels));
+    operator.button(XboxController.Button.kRightBumper.value).onFalse(new InstantCommand(shooterWheels::runWheelsBackwards));
 
     // Climb commands
     driver.button(3).onTrue(new InstantCommand(climb::climbDown));

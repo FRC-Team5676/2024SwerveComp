@@ -43,8 +43,8 @@ public class ShooterWheels extends SubsystemBase {
   }
 
   public void runWheels() {
-    m_isOn = !m_isOn;
-    m_isOnBackwards = !m_isOn;
+    m_isOn = true;
+    m_isOnBackwards = false;
   }
 
   public void runWheelsBackwards() {
