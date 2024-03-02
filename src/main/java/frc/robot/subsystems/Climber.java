@@ -27,11 +27,11 @@ public class Climber extends SubsystemBase {
   }
 
   public void climbUp() {
-    m_leftClimb.set(0.50);
+    m_leftClimb.set(0.80);
   }
 
   public void climbDown() {
-    m_leftClimb.set(-0.50);
+    m_leftClimb.set(-0.80);
   }
 
   public void climbStop() {
