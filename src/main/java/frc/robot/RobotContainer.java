@@ -73,6 +73,8 @@ public class RobotContainer {
     // Shoot commands
     operator.button(XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(shooterWheels::runWheels));
     operator.button(XboxController.Button.kRightBumper.value).onFalse(new InstantCommand(shooterWheels::runWheelsBackwards));
+    operator.button(XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(shooterWheels::runWheels));
+    operator.button(XboxController.Button.kLeftBumper.value).onFalse(new InstantCommand(shooterWheels::runWheelsBackwards));
 
     // Climb commands
     driver.button(3).onTrue(new InstantCommand(climb::climbDown));
