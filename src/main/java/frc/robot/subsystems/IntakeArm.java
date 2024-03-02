@@ -101,4 +101,8 @@ public class IntakeArm extends SubsystemBase {
   public void shootStage() {
     positionRadians = IntakeArmConstants.kShootStage;
   }
+
+  public void shootAmp() {
+    positionRadians = IntakeArmConstants.kAmpPosition;
+  }
 }

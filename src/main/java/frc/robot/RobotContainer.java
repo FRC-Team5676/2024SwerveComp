@@ -73,6 +73,7 @@ public class RobotContainer {
     operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(intakeArm::shootStage));
     operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(intakeArm::intakeNotePosition));
     operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::intakeZeroPosition));
+    operator.button(XboxController.Button.kStart.value).onTrue(new InstantCommand(intakeArm::shootAmp));
 
     // Shoot commands
     operator.button(XboxController.Button.kRightBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheels()));
