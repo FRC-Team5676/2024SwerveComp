@@ -3,10 +3,8 @@ package frc.robot;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.ShooterWheels;
 import frc.robot.utils.AutonManager;
-import frc.robot.commands.Climb.ClimbCommand;
 import frc.robot.commands.Intake.PickupCommand;
 import frc.robot.commands.Intake.RotateIntakeCommand;
-import frc.robot.commands.Intake.ShooterRotateCommand;
 import frc.robot.commands.auto.AutoRoutines;
 import frc.robot.commands.swerve.TeleopSwerveCommand;
 import frc.robot.constants.DriveConstants;
@@ -19,19 +17,17 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IntakeWheels;
-import frc.robot.subsystems.ShooterRotate;
 import frc.robot.subsystems.IntakeArm;
 
 public class RobotContainer {
   public final SwerveDrive swerve = new SwerveDrive(); // Swerve drive system
+  public final ShooterWheels shooterWheels = new ShooterWheels(); // Pickup intake controller
 
   private final AutonManager autonManager = new AutonManager();
   private final CommandJoystick driver = new CommandJoystick(1);
   private final CommandXboxController operator = new CommandXboxController(0);
 
   private final IntakeArm intakeArm = new IntakeArm(); // Arm controller
-  private final ShooterWheels shooterWheels = new ShooterWheels(); // Pickup intake controller
-  private final ShooterRotate shooterRotate = new ShooterRotate(); // Pickup intake controller
   private final IntakeWheels intakeWheels = new IntakeWheels(); // Cannon controller
   private final Climber climb = new Climber(); // Climber
 
@@ -77,11 +73,6 @@ public class RobotContainer {
 
     // Shoot commands
     operator.button(XboxController.Button.kRightBumper.value).onTrue(Commands.runOnce(() -> shooterWheels.runWheels()));
-    operator.button(XboxController.Button.kLeftBumper.value)
-        .onTrue(Commands.runOnce(() -> shooterWheels.runWheelsBackwards()));
-
-    // Shooter rotate commands
-    //shooterRotate.setDefaultCommand(new ShooterRotateCommand(shooterRotate, operator));
 
     // Climb commands
     driver.button(3).onTrue(new InstantCommand(climb::climbDown));
