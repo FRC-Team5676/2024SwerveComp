@@ -3,6 +3,7 @@ package frc.robot;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.ShooterWheels;
 import frc.robot.utils.AutonManager;
+import frc.robot.commands.Intake.ExtendIntakeCommand;
 import frc.robot.commands.Intake.PickupCommand;
 import frc.robot.commands.Intake.RotateIntakeCommand;
 import frc.robot.commands.auto.AutoRoutines;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.IntakeArmExtension;
 
 public class RobotContainer {
   public final SwerveDrive swerve = new SwerveDrive(); // Swerve drive system
@@ -27,6 +29,7 @@ public class RobotContainer {
   private final CommandXboxController operator = new CommandXboxController(0);
 
   private final IntakeArm intakeArm = new IntakeArm(); // Arm controller
+  private final IntakeArmExtension intakeArmExtension = new IntakeArmExtension(); // Arm Extension controller
   private final IntakeWheels intakeWheels = new IntakeWheels(); // Cannon controller
   private final Climber climb = new Climber(); // Climber
 
@@ -70,8 +73,8 @@ public class RobotContainer {
     operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::intakeZeroPosition));
     operator.button(XboxController.Button.kStart.value).onTrue(new InstantCommand(intakeArm::shootAmp));
 
-    // Rotate commands
-    intakeArm.setDefaultCommand(new RotateIntakeCommand(intakeArm, operator));
+    // Extend Arm commands
+    intakeArmExtension.setDefaultCommand(new ExtendIntakeCommand(intakeArmExtension, operator));
 
     // Shoot commands
     operator.button(XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(shooterWheels::runWheels));

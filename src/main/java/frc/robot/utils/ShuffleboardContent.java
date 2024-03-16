@@ -127,9 +127,9 @@ public class ShuffleboardContent {
         public static void initIntakeArmExtension(IntakeArmExtension intakeArm) {
                 ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
 
-                drLayout1.addNumber("Intake Ext Position", () -> Units.radiansToDegrees(intakeArm.getPosition())).withPosition(1, 3)
+                drLayout1.addNumber("Intake Ext Position", () -> (intakeArm.getPosition())).withPosition(1, 3)
                                 .withSize(1, 1);
-                drLayout1.addNumber("Position Ext Setpoint", () -> Units.radiansToDegrees(intakeArm.getPositionSetpoint())).withPosition(2, 3)
+                drLayout1.addNumber("Position Ext Setpoint", () -> (intakeArm.getPositionSetpoint())).withPosition(2, 3)
                                 .withSize(1, 1);
         }
 }

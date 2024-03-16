@@ -3,36 +3,39 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.IntakeArmConstants;
 import frc.robot.utils.ShuffleboardContent;
 
 public class IntakeArmExtension extends SubsystemBase {
-  public double positionRadians;
+  public double m_positionInches;
 
-  private final TalonSRX m_motor;
-  private final double m_minPosition = Units.degreesToRadians(0);
-  private final double m_maxPosition = Units.degreesToRadians(5000);
-  private final double m_encoderPositionFactor = (2 * Math.PI) / 5;
+  private final WPI_TalonSRX m_motor = new WPI_TalonSRX(60);
+  private final double m_minPosition = 0;
+  private final double m_maxPosition = 5;
+  private final double m_convStepToInch = 5 * 10 * 1024 / 0.8;
 
   public IntakeArmExtension() {
-    m_motor = new TalonSRX(60);
     m_motor.configFactoryDefault();
     m_motor.setNeutralMode(NeutralMode.Brake);
 
-    // Encoder setup
-    m_motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,	0, 30);
-
-    m_motor.config_kP(0, 1);
+    // PID Setup
+    m_motor.config_kP(0, 0.04);
     m_motor.config_kI(0, 0);
     m_motor.config_kD(0, 0);
     m_motor.config_kF(0, 0);
+
+    // Encoder setup
+    m_motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+    m_motor.setInverted(false);
+    m_motor.setSensorPhase(false);
+    m_motor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 30);
     m_motor.configPeakOutputForward(1);
     m_motor.configPeakOutputReverse(-1);
+
+    m_positionInches = getPosition();
 
     ShuffleboardContent.initIntakeArmExtension(this);
   }
@@ -51,34 +54,32 @@ public class IntakeArmExtension extends SubsystemBase {
   }
 
   public double getPosition() {
-    return m_motor.getSelectedSensorPosition() * m_encoderPositionFactor;
+    return m_motor.getSelectedSensorPosition() / m_convStepToInch;
   }
 
   public double getPositionSetpoint() {
-    return positionRadians;
+    return m_positionInches;
   }
 
   public void setExtensionPosition(double position) {
-    positionRadians = position;
+    m_positionInches = position;
   }
 
   // Throttle controllers
-  public void rotateIntake(double throttle) {
-    if (Math.abs(throttle) > 0.05) {
-      positionRadians += Units.degreesToRadians(throttle * IntakeArmConstants.throttleMultiplier);
-    }
+  public void extendIntake(double throttle) {
+    m_positionInches += throttle * 0.1;
   }
 
   public void setReferencePeriodic() {
-    positionRadians = MathUtil.clamp(positionRadians, IntakeArmConstants.kMinPosition, IntakeArmConstants.kMaxPosition);
-    m_motor.set(ControlMode.Position , positionRadians / m_encoderPositionFactor);
+    //positionInches = MathUtil.clamp(positionRadians, m_minPosition, m_maxPosition);
+    m_motor.set(ControlMode.Position, m_positionInches * m_convStepToInch);
   }
 
   public void intakeZeroPosition() {
-    positionRadians = m_minPosition;
+    m_positionInches = m_minPosition;
   }
 
   public void shootAmp() {
-    positionRadians = m_maxPosition;
+    m_positionInches = m_maxPosition;
   }
 }
