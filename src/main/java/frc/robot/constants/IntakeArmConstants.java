@@ -8,14 +8,14 @@ public final class IntakeArmConstants {
     public static final int kLeftCanId = 21;
     public static final int kRightCanId = 23;
 
-    public static final double kMinPosition = Units.degreesToRadians(-87.5);
-    public static final double kMaxPosition = Units.degreesToRadians(35);
+    public static final double kMinPosition = Units.degreesToRadians(0); // -87.5
+    public static final double kMaxPosition = Units.degreesToRadians(122.5); // 35
 
-    public static final double kZeroPosition = Units.degreesToRadians(0);
-    public static final double kIntakePosition = Units.degreesToRadians(-86.0);
-    public static final double kShootSpeaker = Units.degreesToRadians(-64.5);
-    public static final double kShootStage = Units.degreesToRadians(-43.0);
-    public static final double kAmpPosition = Units.degreesToRadians(-31.0);
+    public static final double kZeroPosition = Units.degreesToRadians(87.5); // 0
+    public static final double kIntakePosition = Units.degreesToRadians(1.5); // -86.0
+    public static final double kShootSpeaker = Units.degreesToRadians(23.0); // -64.5
+    public static final double kShootStage = Units.degreesToRadians(44.5); // -43.0
+    public static final double kAmpPosition = Units.degreesToRadians(56.5); // -31.0
 
     public static final double kGearRatio = 100 / 1 * 64 / 15;
     public static final double kIntakeArmEncoderPositionFactor = (2 * Math.PI) / kGearRatio;
