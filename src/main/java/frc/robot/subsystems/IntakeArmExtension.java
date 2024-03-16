@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.ShuffleboardContent;
 
@@ -13,8 +14,8 @@ public class IntakeArmExtension extends SubsystemBase {
   public double m_positionInches;
 
   private final WPI_TalonSRX m_motor = new WPI_TalonSRX(60);
-  private final double m_minPosition = 0;
-  private final double m_maxPosition = 5;
+  private final double m_minPosition = 0.2;
+  private final double m_maxPosition = 2.45;
   private final double m_convStepToInch = 5 * 10 * 1024 / 0.8;
 
   public IntakeArmExtension() {
@@ -71,7 +72,7 @@ public class IntakeArmExtension extends SubsystemBase {
   }
 
   public void setReferencePeriodic() {
-    //positionInches = MathUtil.clamp(positionRadians, m_minPosition, m_maxPosition);
+    m_positionInches = MathUtil.clamp(m_positionInches, m_minPosition, m_maxPosition);
     m_motor.set(ControlMode.Position, m_positionInches * m_convStepToInch);
   }
 
