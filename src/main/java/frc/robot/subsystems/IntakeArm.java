@@ -13,7 +13,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeArm extends SubsystemBase {
 
-  public double positionRadians;
+  public double m_positionRadians;
 
   private final RelativeEncoder m_leftEncoder;
   private final CANSparkMax m_leftSparkMax;
@@ -46,6 +46,8 @@ public class IntakeArm extends SubsystemBase {
     m_leftSparkMax.burnFlash();
     m_rightSparkMax.burnFlash();
 
+    m_positionRadians = getPosition();
+
     ShuffleboardContent.initIntakeArm(this);
   }
 
@@ -67,42 +69,42 @@ public class IntakeArm extends SubsystemBase {
   }
 
   public double getPositionSetpoint() {
-    return positionRadians;
+    return m_positionRadians;
   }
 
   public void setIntakePosition(double position) {
-    positionRadians = position;
+    m_positionRadians = position;
   }
 
   // Throttle controllers
   public void rotateIntake(double throttle) {
     if (Math.abs(throttle) > 0.05) {
-      positionRadians += Units.degreesToRadians(throttle * IntakeArmConstants.throttleMultiplier);
+      m_positionRadians += Units.degreesToRadians(throttle * IntakeArmConstants.throttleMultiplier);
     }
   }
 
   public void setReferencePeriodic() {
-    positionRadians = MathUtil.clamp(positionRadians, IntakeArmConstants.kMinPosition, IntakeArmConstants.kMaxPosition);
-    m_leftPIDController.setReference(positionRadians, CANSparkMax.ControlType.kPosition);
+    m_positionRadians = MathUtil.clamp(m_positionRadians, IntakeArmConstants.kMinPosition, IntakeArmConstants.kMaxPosition);
+    m_leftPIDController.setReference(m_positionRadians, CANSparkMax.ControlType.kPosition);
   }
 
   public void intakeZeroPosition() {
-    positionRadians = IntakeArmConstants.kZeroPosition;
+    m_positionRadians = IntakeArmConstants.kZeroPosition;
   }
 
   public void intakeNotePosition() {
-    positionRadians = IntakeArmConstants.kIntakePosition;
+    m_positionRadians = IntakeArmConstants.kIntakePosition;
   }
 
   public void shootSpeaker() {
-    positionRadians = IntakeArmConstants.kShootSpeaker;
+    m_positionRadians = IntakeArmConstants.kShootSpeaker;
   }
 
   public void shootStage() {
-    positionRadians = IntakeArmConstants.kShootStage;
+    m_positionRadians = IntakeArmConstants.kShootStage;
   }
 
   public void shootAmp() {
-    positionRadians = IntakeArmConstants.kAmpPosition;
+    m_positionRadians = IntakeArmConstants.kAmpPosition;
   }
 }
