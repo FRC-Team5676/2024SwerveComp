@@ -9,16 +9,23 @@ import frc.robot.utils.ShuffleboardContent;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeArm extends SubsystemBase {
 
   public double m_positionRadians;
+  public double m_extendInches;
 
   private final RelativeEncoder m_leftEncoder;
   private final CANSparkMax m_leftSparkMax;
   private final CANSparkMax m_rightSparkMax;
   private final SparkPIDController m_leftPIDController;
+
+  private final WPI_TalonSRX m_motor = new WPI_TalonSRX(60);
+  private final double m_minPosition = 0.2;
+  private final double m_maxPosition = 2.45;
+  private final double m_convStepToInch = 5 * 10 * 1024 / 0.8;
 
   public IntakeArm() {
     m_leftSparkMax = new CANSparkMax(IntakeArmConstants.kLeftCanId, MotorType.kBrushless);
@@ -57,11 +64,11 @@ public class IntakeArm extends SubsystemBase {
   }
 
   public double getMinRotations() {
-    return IntakeArmConstants.kMinPosition;
+    return IntakeArmConstants.kMinRotatePosition;
   }
 
   public double getMaxRotations() {
-    return IntakeArmConstants.kMaxPosition;
+    return IntakeArmConstants.kMaxRotatePosition;
   }
 
   public double getPosition() {
@@ -84,7 +91,7 @@ public class IntakeArm extends SubsystemBase {
   }
 
   public void setReferencePeriodic() {
-    m_positionRadians = MathUtil.clamp(m_positionRadians, IntakeArmConstants.kMinPosition, IntakeArmConstants.kMaxPosition);
+    m_positionRadians = MathUtil.clamp(m_positionRadians, IntakeArmConstants.kMinRotatePosition, IntakeArmConstants.kMaxRotatePosition);
     m_leftPIDController.setReference(m_positionRadians, CANSparkMax.ControlType.kPosition);
   }
 
