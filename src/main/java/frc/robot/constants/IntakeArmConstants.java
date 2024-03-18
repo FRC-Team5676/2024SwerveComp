@@ -15,7 +15,7 @@ public final class IntakeArmConstants {
 
     public static final double kZeroPosition = Units.degreesToRadians(87.5); // 0
     public static final double kIntakePosition = Units.degreesToRadians(1.5); // -86.0
-    public static final double kShootSpeaker = Units.degreesToRadians(23.0); // -64.5
+    public static final double kShootSpeaker = Units.degreesToRadians(25.5); // -64.5
     public static final double kShootStage = Units.degreesToRadians(44.5); // -43.0
     public static final double kAmpPosition = Units.degreesToRadians(96.5); // -31.0
 
