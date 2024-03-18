@@ -70,9 +70,8 @@ public class RobotContainer {
     operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(intakeArm::shootSpeaker));
     operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(intakeArm::shootStage));
     operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(intakeArm::intakeNotePosition));
-    operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::intakeZeroPosition));
-    operator.button(XboxController.Button.kStart.value).onTrue(new InstantCommand(intakeArm::shootAmp));
-
+    operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::shootAmp));
+    
     // Extend Arm commands
     intakeArmExtension.setDefaultCommand(new ExtendIntakeCommand(intakeArmExtension, operator));
 
