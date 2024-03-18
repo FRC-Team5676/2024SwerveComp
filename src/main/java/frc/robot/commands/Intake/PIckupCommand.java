@@ -29,7 +29,7 @@ public class PickupCommand extends Command {
     public void execute() {
 
       double throttle = m_controller.getLeftTriggerAxis() - m_controller.getRightTriggerAxis(); // Throttles for positive and negative signs
-        m_noteMotor.intake(throttle * 0.4);
+        m_noteMotor.intake(throttle * 0.6);
 
     }
 
