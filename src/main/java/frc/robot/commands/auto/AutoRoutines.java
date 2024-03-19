@@ -28,14 +28,15 @@ public class AutoRoutines {
                                                 .withTimeout(1),
                                 new InstantCommand(() -> shooter.runWheels(), shooter),
                                 new WaitCommand(1),
+                                new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                                 new WaitCommand(1),
                                 new ParallelCommandGroup(
-                                        new PathPlannerAuto("Pick Center Note").withTimeout(2),
+                                        new PathPlannerAuto("Pick Center Note").withTimeout(2.5),
                                         new StartEndCommand(() -> intake.intake(-1),
                                                         () -> intake.intake(0),
                                                         intake)
-                                                        .withTimeout(2)),
+                                                        .withTimeout(2.5)),
                                 new ParallelCommandGroup(
                                         new PathPlannerAuto("Return To Speaker"),
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
