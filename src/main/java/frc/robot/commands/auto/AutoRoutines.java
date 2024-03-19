@@ -51,7 +51,7 @@ public class AutoRoutines {
                                 new InstantCommand(() -> shooter.runWheels(), shooter),
                                 new ParallelCommandGroup(
                                         new InstantCommand(() -> swerve.teleopDrive(0.35, 0, 0), swerve).withTimeout(2),
-                                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
-                                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter)));
+                                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm).withTimeout(2),
+                                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter).withTimeout(2)));
         }
 }
