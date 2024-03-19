@@ -7,13 +7,15 @@ import edu.wpi.first.math.util.Units;
 public final class IntakeArmConstants {
     public static final int kLeftCanId = 21;
     public static final int kRightCanId = 23;
+    public static final int kExtendCanId = 60;
 
-    public static final double kMinPosition = Units.degreesToRadians(0); // -87.5
-    public static final double kMaxPosition = Units.degreesToRadians(109.0); // 35
+    // Rotate
+    public static final double kMinRotatePosition = Units.degreesToRadians(0); // -87.5
+    public static final double kMaxRotatePosition = Units.degreesToRadians(109.0); // 35
 
     public static final double kZeroPosition = Units.degreesToRadians(87.5); // 0
     public static final double kIntakePosition = Units.degreesToRadians(1.5); // -86.0
-    public static final double kShootSpeaker = Units.degreesToRadians(23.0); // -64.5
+    public static final double kShootSpeaker = Units.degreesToRadians(25.5); // -64.5
     public static final double kShootStage = Units.degreesToRadians(44.5); // -43.0
     public static final double kAmpPosition = Units.degreesToRadians(96.5); // -31.0
 
@@ -31,4 +33,11 @@ public final class IntakeArmConstants {
     public static final IdleMode kMotorIdleMode = IdleMode.kBrake;
 
     public static final double throttleMultiplier = 0.5;
+
+    // Extend
+    public static final double kMinExtendPosition = 0.2;
+    public static final double kMSafeExtendPosition = 0.3;
+    public static final double kMaxExtendPosition = 2.45;
+    public static final double kIntakeArmEncoderExtendFactor = 5 * 10 * 1024 / 0.8;
+  
 }

@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.constants.ModuleConstants;
 import frc.robot.subsystems.IntakeArm;
-import frc.robot.subsystems.IntakeArmExtension;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.SwerveModule;
 
@@ -118,18 +117,13 @@ public class ShuffleboardContent {
         public static void initIntakeArm(IntakeArm intakeArm) {
                 ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
 
-                drLayout1.addNumber("Intake Position", () -> Units.radiansToDegrees(intakeArm.getPosition())).withPosition(1, 1)
+                drLayout1.addNumber("Rotate Position", () -> Units.radiansToDegrees(intakeArm.getRotationPosition())).withPosition(1, 1)
                                 .withSize(1, 1);
-                drLayout1.addNumber("Position Setpoint", () -> Units.radiansToDegrees(intakeArm.getPositionSetpoint())).withPosition(2, 1)
+                drLayout1.addNumber("Rotate Setpoint", () -> Units.radiansToDegrees(intakeArm.getRotationPositionSetpoint())).withPosition(2, 1)
                                 .withSize(1, 1);
-        }
-
-        public static void initIntakeArmExtension(IntakeArmExtension intakeArm) {
-                ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
-
-                drLayout1.addNumber("Intake Ext Position", () -> (intakeArm.getPosition())).withPosition(1, 3)
+                drLayout1.addNumber("Ext Position", () -> (intakeArm.getExtensionPosition())).withPosition(1, 3)
                                 .withSize(1, 1);
-                drLayout1.addNumber("Position Ext Setpoint", () -> (intakeArm.getPositionSetpoint())).withPosition(2, 3)
+                drLayout1.addNumber("Ext Setpoint", () -> (intakeArm.getExtensionPositionSetpoint())).withPosition(2, 3)
                                 .withSize(1, 1);
         }
 }
