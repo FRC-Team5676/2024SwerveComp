@@ -18,8 +18,7 @@ public class AutoRoutines {
         public static Command ShootNoteAndLeave(ShooterWheels shooter, IntakeWheels intake, IntakeArm intakeArm,
                         SwerveDrive swerve) {
                 return Commands.sequence(
-                                new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
-                                                intakeArm),
+                                new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                                 new InstantCommand(() -> shooter.runWheels(), shooter),
                                 new WaitCommand(1),
                                 new StartEndCommand(() -> intake.intake(-1),
@@ -32,13 +31,15 @@ public class AutoRoutines {
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                                 new WaitCommand(1),
                                 new ParallelCommandGroup(
-                                        new PathPlannerAuto("Pick Center Note").withTimeout(2.5),
+                                        new InstantCommand(() -> swerve.teleopDrive(-0.2, 0, 0), swerve).withTimeout(1.5),
+                                        //new PathPlannerAuto("Pick Center Note").withTimeout(2.5),
                                         new StartEndCommand(() -> intake.intake(-1),
                                                         () -> intake.intake(0),
                                                         intake)
                                                         .withTimeout(2.5)),
                                 new ParallelCommandGroup(
-                                        new PathPlannerAuto("Return To Speaker"),
+                                        new InstantCommand(() -> swerve.teleopDrive(0.2, 0, 0), swerve).withTimeout(1.5),
+                                        //new PathPlannerAuto("Return To Speaker"),
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
                                                         intakeArm)).withTimeout(2),
                                 new InstantCommand(() -> shooter.runWheels(), shooter),
@@ -49,7 +50,9 @@ public class AutoRoutines {
                                                 .withTimeout(1),
                                 new InstantCommand(() -> shooter.runWheels(), shooter),
                                 new ParallelCommandGroup(
-                                        new PathPlannerAuto("Pick Center Note").withTimeout(2),
-                                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm)));
+                                        new InstantCommand(() -> swerve.teleopDrive(-0.2, 0, 0), swerve).withTimeout(1.5),
+                                        //new PathPlannerAuto("Pick Center Note").withTimeout(2),
+                                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
+                                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter)));
         }
 }
