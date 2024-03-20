@@ -103,7 +103,7 @@ public class AutoRoutines {
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve).withTimeout(0.1),
                         // Shoot Start
                         new InstantCommand(() -> shooter.runWheels(), shooter),
-                        new WaitCommand(0.7),
+                        new WaitCommand(0.9),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
                         new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
                         // Shoot End
