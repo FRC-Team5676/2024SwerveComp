@@ -75,15 +75,15 @@ public class AutoRoutines {
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                                 new WaitCommand(1),
                                 new ParallelCommandGroup(
-                                        new InstantCommand(() -> swerve.teleopDrive(0.4, 0, 0), swerve).withTimeout(1.2), // throttle = 0.2
+                                        new InstantCommand(() -> swerve.teleopDrive(0.4, 0, 0), swerve).withTimeout(1), // throttle = 0.2
                                         new StartEndCommand(() -> intake.intake(-1),
                                                         () -> intake.intake(0),
                                                         intake)
                                                         .withTimeout(1)),
                                 new ParallelCommandGroup(
-                                        new InstantCommand(() -> swerve.teleopDrive(-0.5, 0, 0), swerve).withTimeout(1),
+                                        new InstantCommand(() -> swerve.teleopDrive(-0.4, 0, 0), swerve).withTimeout(1),
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
-                                                        intakeArm).withTimeout(1)), // 
+                                                        intakeArm).withTimeout(1)),
                                 new StartEndCommand(() -> intake.intake(0.1),
                                                 () -> intake.intake(0),
                                                 intake)
@@ -102,15 +102,15 @@ public class AutoRoutines {
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                                 new WaitCommand(1),
                                 new ParallelCommandGroup(
-                                        new InstantCommand(() -> swerve.teleopDrive(0.4, -0.56, 0), swerve).withTimeout(1), // throttle = 0.2, strafe = 0.27
+                                        new InstantCommand(() -> swerve.teleopDrive(0.4, -0.6, 0), swerve).withTimeout(1), // throttle = 0.2, strafe = 0.27
                                         new StartEndCommand(() -> intake.intake(-1),
                                                         () -> intake.intake(0),
                                                         intake)
                                                         .withTimeout(1)), // 1 seconds
                                 new ParallelCommandGroup(
-                                        new InstantCommand(() -> swerve.teleopDrive(-0.4, 0.54, 0), swerve).withTimeout(0.5), // throttle = -0.2, strafe = 0.27
+                                        new InstantCommand(() -> swerve.teleopDrive(-0.4, 0.6, 0), swerve).withTimeout(0.4), // throttle = -0.2, strafe = 0.27
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
-                                                        intakeArm).withTimeout(1)), // 1 seconds
+                                                        intakeArm).withTimeout(1)),
                                 new StartEndCommand(() -> intake.intake(0.1),
                                                 () -> intake.intake(0),
                                                 intake)
