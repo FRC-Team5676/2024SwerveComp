@@ -101,6 +101,6 @@ public class AutoRoutines {
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
                         new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
                         // Shoot End
-                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
+                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm));
         }
 }
