@@ -91,7 +91,7 @@ public class AutoRoutines {
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new WaitCommand(0.5), 
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> swerve.teleopDrive(0.4, -0.65, 0), swerve),
+                                new InstantCommand(() -> swerve.teleopDrive(0.4, -0.65, 0), swerve).withTimeout(1),
                                 new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1)
                                                 ),
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve),
