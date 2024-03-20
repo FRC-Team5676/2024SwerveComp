@@ -59,79 +59,48 @@ public class AutoRoutines {
                                         new InstantCommand(() -> shooter.runWheelsBackwards(), shooter).withTimeout(2)));
         }
 
-        public static Command Shoot3Notes(ShooterWheels shooter, IntakeWheels intake, IntakeArm intakeArm,
-                        SwerveDrive swerve) {
+        public static Command Shoot3Notes(ShooterWheels shooter, IntakeWheels intake, IntakeArm intakeArm, SwerveDrive swerve) {
                 return Commands.sequence(
-                                new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
-                                new WaitCommand(1),
-                                new StartEndCommand(() -> intake.intake(-1),
-                                                () -> intake.intake(0),
-                                                intake)
-                                                .withTimeout(1),
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
-                                new WaitCommand(1),
-                                new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
+                        // Shoot Start
+                        new InstantCommand(() -> shooter.runWheels(), shooter), 
+                        new WaitCommand(0.7), 
+                        new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
+                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        // Shoot End
+                        new ParallelCommandGroup(
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
-                                new WaitCommand(1),
-                                new ParallelCommandGroup(
-                                        new InstantCommand(() -> swerve.teleopDrive(0.4, 0, 0), swerve).withTimeout(1), // throttle = 0.2
-                                        new StartEndCommand(() -> intake.intake(-1),
-                                                        () -> intake.intake(0),
-                                                        intake)
-                                                        .withTimeout(1)),
-                                new ParallelCommandGroup(
-                                        new InstantCommand(() -> swerve.teleopDrive(-0.4, 0, 0), swerve).withTimeout(1),
-                                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
-                                                        intakeArm).withTimeout(1)),
-                                new StartEndCommand(() -> intake.intake(0.1),
-                                                () -> intake.intake(0),
-                                                intake)
-                                                .withTimeout(0.1),
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
-                                new WaitCommand(1), // <== Change this to get closer to speaker maybe 1.2???
-                                new StartEndCommand(() -> intake.intake(-1),
-                                                () -> intake.intake(0),
-                                                intake)
-                                                .withTimeout(0.7),
-
-
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
-                                new WaitCommand(1),
-                                new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
-                                new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
-                                new WaitCommand(1),
-                                new ParallelCommandGroup(
-                                        new InstantCommand(() -> swerve.teleopDrive(0.4, -0.6, 0), swerve).withTimeout(1), // throttle = 0.2, strafe = 0.27
-                                        new StartEndCommand(() -> intake.intake(-1),
-                                                        () -> intake.intake(0),
-                                                        intake)
-                                                        .withTimeout(1)), // 1 seconds
-                                new ParallelCommandGroup(
-                                        new InstantCommand(() -> swerve.teleopDrive(-0.4, 0.6, 0), swerve).withTimeout(0.4), // throttle = -0.2, strafe = 0.27
-                                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
-                                                        intakeArm).withTimeout(1)),
-                                new StartEndCommand(() -> intake.intake(0.1),
-                                                () -> intake.intake(0),
-                                                intake)
-                                                .withTimeout(0.1),
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
-                                new WaitCommand(1.5), // <== Change this to get closer to speaker maybe 1.2???
-                                new StartEndCommand(() -> intake.intake(-1),
-                                                () -> intake.intake(0),
-                                                intake)
-                                                .withTimeout(0.7),
-
-
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
-                                new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
-                                new WaitCommand(1),
-                                /*new ParallelCommandGroup(
-                                        new StartEndCommand(() -> swerve.teleopDrive(0.35, 0, 0),
-                                                        () -> swerve.teleopDrive(0, 0, 0),
-                                                        swerve)
-                                                        .withTimeout(2),*/
-                                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm).withTimeout(2),
-                                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter).withTimeout(2));
+                                new InstantCommand(() -> swerve.teleopDrive(0.4, 0, 0), swerve).withTimeout(1),
+                                new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1)
+                                ),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> swerve.teleopDrive(-0.4, 0, 0), swerve).withTimeout(1),
+                                new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),intakeArm).withTimeout(1)
+                                ),
+                        new StartEndCommand(() -> intake.intake(0.1), () -> intake.intake(0), intake).withTimeout(0.1),
+                        // Shoot Start
+                        new InstantCommand(() -> shooter.runWheels(), shooter),
+                        new WaitCommand(0.7),
+                        new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
+                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        // Shoot End
+                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> swerve.teleopDrive(0.4, -0.6, 0), swerve).withTimeout(1),
+                                new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1)
+                                                ),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> swerve.teleopDrive(-0.4, 0.6, 0), swerve).withTimeout(0.4),
+                                new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm).withTimeout(0.4),
+                                new StartEndCommand(() -> intake.intake(0.1), () -> intake.intake(0), intake).withTimeout(0.1)
+                                                ),
+                        new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve).withTimeout(0.1),
+                        // Shoot Start
+                        new InstantCommand(() -> shooter.runWheels(), shooter),
+                        new WaitCommand(0.7),
+                        new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
+                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        // Shoot End
+                        new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
         }
 }
