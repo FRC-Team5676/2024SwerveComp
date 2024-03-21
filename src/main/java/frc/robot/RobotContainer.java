@@ -42,7 +42,9 @@ public class RobotContainer {
   }
 
   private void addAutonomousChoices() {
-    autonManager.addDefaultOption("Shoot Note and Leave",
+    autonManager.addDefaultOption("Red / Blue - Shoot 2 Notes and Leave",
+        AutoRoutines.Shoot2Notes(shooterWheels, intakeWheels, intakeArm, swerve));
+    autonManager.addOption("Red - Shoot 3 Notes and Leave",
         AutoRoutines.Shoot3Notes(shooterWheels, intakeWheels, intakeArm, swerve));
   }
 
