@@ -59,7 +59,7 @@ public class AutoRoutines {
                                         new InstantCommand(() -> shooter.runWheelsBackwards(), shooter).withTimeout(2)));
         }
 
-        public static Command Shoot3Notes(ShooterWheels shooter, IntakeWheels intake, IntakeArm intakeArm, SwerveDrive swerve) {
+        public static Command Shoot3NotesRed(ShooterWheels shooter, IntakeWheels intake, IntakeArm intakeArm, SwerveDrive swerve) {
                 return Commands.sequence(
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                         // Shoot Start

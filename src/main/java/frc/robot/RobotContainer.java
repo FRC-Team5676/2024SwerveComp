@@ -45,7 +45,7 @@ public class RobotContainer {
     autonManager.addDefaultOption("Red / Blue - Shoot 2 Notes and Leave",
         AutoRoutines.Shoot2Notes(shooterWheels, intakeWheels, intakeArm, swerve));
     autonManager.addOption("Red - Shoot 3 Notes and Leave",
-        AutoRoutines.Shoot3Notes(shooterWheels, intakeWheels, intakeArm, swerve));
+        AutoRoutines.Shoot3NotesRed(shooterWheels, intakeWheels, intakeArm, swerve));
   }
 
   private void configureButtonBindings() {
