@@ -96,7 +96,7 @@ public class AutoRoutines {
                         new WaitCommand(0.05), 
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                         new StartEndCommand(() -> intake.intake(0.1), () -> intake.intake(0), intake).withTimeout(0.1),
-                        new WaitCommand(1), 
+                        new WaitCommand(1.05), 
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve).withTimeout(0.1),
                         // Shoot Start
                         new InstantCommand(() -> shooter.runWheels(), shooter),
@@ -147,7 +147,7 @@ public class AutoRoutines {
                         new WaitCommand(0.05), 
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                         new StartEndCommand(() -> intake.intake(0.1), () -> intake.intake(0), intake).withTimeout(0.1),
-                        new WaitCommand(1), 
+                        new WaitCommand(1.05), 
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve).withTimeout(0.1),
                         // Shoot Start
                         new InstantCommand(() -> shooter.runWheels(), shooter),
