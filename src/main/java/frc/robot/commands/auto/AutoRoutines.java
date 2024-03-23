@@ -90,9 +90,9 @@ public class AutoRoutines {
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new WaitCommand(1), 
-                        new InstantCommand(() -> swerve.teleopDrive(0.4, -0.6, 0), swerve),
+                        new InstantCommand(() -> swerve.teleopDrive(0.4, -0.65, 0), swerve),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1.05),
-                        new InstantCommand(() -> swerve.teleopDrive(-0.4, 0.6, 0), swerve),
+                        new InstantCommand(() -> swerve.teleopDrive(-0.4, 0.65, 0), swerve),
                         new WaitCommand(0.05), 
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                         new StartEndCommand(() -> intake.intake(0.1), () -> intake.intake(0), intake).withTimeout(0.1),
@@ -141,9 +141,9 @@ public class AutoRoutines {
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new WaitCommand(1), 
-                        new InstantCommand(() -> swerve.teleopDrive(0.4, 0.6, 0), swerve),
+                        new InstantCommand(() -> swerve.teleopDrive(0.4, 0.65, 0), swerve),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1.05),
-                        new InstantCommand(() -> swerve.teleopDrive(-0.4, -0.6, 0), swerve),
+                        new InstantCommand(() -> swerve.teleopDrive(-0.4, -0.65, 0), swerve),
                         new WaitCommand(0.05), 
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                         new StartEndCommand(() -> intake.intake(0.1), () -> intake.intake(0), intake).withTimeout(0.1),
