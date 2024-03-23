@@ -54,7 +54,7 @@ public class AutoRoutines {
                                         new StartEndCommand(() -> swerve.teleopDrive(0.35, 0, 0),
                                                         () -> swerve.teleopDrive(0, 0, 0),
                                                         swerve)
-                                                        .withTimeout(2),
+                                                        .withTimeout(3), // was 2 seconds
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm).withTimeout(2),
                                         new InstantCommand(() -> shooter.runWheelsBackwards(), shooter).withTimeout(2)));
         }
@@ -89,7 +89,7 @@ public class AutoRoutines {
                         new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
-                        new WaitCommand(0.5), 
+                        new WaitCommand(1), 
                         new InstantCommand(() -> swerve.teleopDrive(0.4, -0.6, 0), swerve),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1.05),
                         new InstantCommand(() -> swerve.teleopDrive(-0.4, 0.6, 0), swerve),
@@ -140,7 +140,7 @@ public class AutoRoutines {
                         new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
-                        new WaitCommand(0.5), 
+                        new WaitCommand(1), 
                         new InstantCommand(() -> swerve.teleopDrive(0.4, 0.6, 0), swerve),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1.05),
                         new InstantCommand(() -> swerve.teleopDrive(-0.4, -0.6, 0), swerve),
