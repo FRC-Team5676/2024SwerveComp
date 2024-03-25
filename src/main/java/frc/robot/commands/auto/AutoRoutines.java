@@ -38,12 +38,13 @@ public class AutoRoutines {
                                         new InstantCommand(() -> swerve.teleopDrive(-0.3, 0, 0), swerve).withTimeout(2),
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
                                                         intakeArm).withTimeout(2)),
+                                new WaitCommand(0.5),
                                 new StartEndCommand(() -> intake.intake(0.1),
                                                 () -> intake.intake(0),
                                                 intake)
                                                 .withTimeout(0.1),
                                 new InstantCommand(() -> shooter.runWheels(), shooter),
-                                new WaitCommand(1), // <== Change this to get closer to speaker maybe 1.2???
+                                new WaitCommand(1),
                                 new StartEndCommand(() -> intake.intake(-1),
                                                 () -> intake.intake(0),
                                                 intake)
