@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.swerve.teleopDrive(0, 0, 0);
-    m_robotContainer.intakeArm.runWheelsBackwards();
+    m_robotContainer.intakeArm.stopWheels();
   }
 
   /** This function is called periodically during operator control. */
