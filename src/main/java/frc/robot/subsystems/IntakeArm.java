@@ -40,6 +40,7 @@ public class IntakeArm extends SubsystemBase {
   private static boolean m_isOnFast = false;
   private static boolean m_isOnSlow = false;
   private static boolean m_isOnBackwards = false;
+  private static boolean m_isOff = true;
 
   // Intake Wheels
   public static boolean m_noteDetected = false;
@@ -190,7 +191,9 @@ public class IntakeArm extends SubsystemBase {
     m_leftPIDController.setReference(m_positionRadians, CANSparkMax.ControlType.kPosition);
 
     // Shoot Wheels
-    if (m_isOnFast) {
+    if (m_isOff) {
+      uppershooterMotor.set(0);
+    } else if (m_isOnFast) {
       uppershooterMotor.set(IntakeArmConstants.kShootSpeedForwardFast);
     } else if (m_isOnSlow) {
       uppershooterMotor.set(IntakeArmConstants.kShootSpeedForwardSlow);
@@ -211,7 +214,7 @@ public class IntakeArm extends SubsystemBase {
   public void intakeNotePosition() {
     m_positionRadians = IntakeArmConstants.kIntakePosition;
     m_extendInches = IntakeArmConstants.kMinExtendPosition;
-    runWheelsBackwards();
+    stopWheels();
   }
 
   public void shootSpeaker() {
@@ -234,21 +237,31 @@ public class IntakeArm extends SubsystemBase {
 
   // Shoot Wheels
   public void runWheelsFast() {
+    m_isOff = false;
     m_isOnFast = true;
     m_isOnSlow = false;
     m_isOnBackwards = false;
   }
 
   public void runWheelsSlow() {
+    m_isOff = false;
     m_isOnFast = false;
     m_isOnSlow = true;
     m_isOnBackwards = false;
   }
 
   public void runWheelsBackwards() {
+    m_isOff = false;
     m_isOnFast = false;
     m_isOnSlow = false;
-    m_isOnBackwards = !m_isOnBackwards;
+    m_isOnBackwards = true;
+  }
+
+  public void stopWheels() {
+    m_isOff = true;
+    m_isOnFast = false;
+    m_isOnSlow = false;
+    m_isOnBackwards = false;
   }
 
   // Intake Wheels
@@ -275,7 +288,7 @@ public class IntakeArm extends SubsystemBase {
       }
 
       if (m_noteReverse) {
-        m_intakeMotor.set(-0.1);
+        m_intakeMotor.set(0.15);
 
         if (!m_noteDetected) {
           m_noteReverse = false;
