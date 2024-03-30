@@ -274,7 +274,7 @@ public class IntakeArm extends SubsystemBase {
         m_intakeMotor.set(0);
     }
 
-    if (m_isOnBackwards) {
+    if (m_isOnBackwards || m_isOff) {
       if (m_noteIntake) {
         if (Math.abs(throttle) > 0.05) {
           m_intakeMotor.set(throttle);
