@@ -15,17 +15,19 @@ public final class ModuleConstants {
 
     // From: https://www.swervedrivespecialties.com/products/mk4i-swerve-module
     /* Drive */
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(4.0);
-    public static final double kMk4iL2DriveGearRatio = 6.75;
+    private static final double kWheelDiameterMeters = Units.inchesToMeters(4.0);
+    //private static final double kMk4iL1DriveGearRatio = 8.14;
+    //private static final double kMk4iL2DriveGearRatio = 6.75;
+    private static final double kMk4iL2TurboDriveGearRatio = 5.903;
     public static final double kDriveMotorFreeSpeedRps = kNeoFreeSpeedRpm / 60;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     public static final double kDriveWheelFreeSpeedRps = (kDriveMotorFreeSpeedRps * kWheelCircumferenceMeters)
-        / kMk4iL2DriveGearRatio;
+        / kMk4iL2TurboDriveGearRatio;
 
     public static final double kDriveEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
-        / kMk4iL2DriveGearRatio; // meters
+        / kMk4iL2TurboDriveGearRatio; // meters
     public static final double kDriveEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
-        / kMk4iL2DriveGearRatio) / 60.0; // meters per second
+        / kMk4iL2TurboDriveGearRatio) / 60.0; // meters per second
 
     public static final double kDriveP = 0.04;
     public static final double kDriveI = 0;
