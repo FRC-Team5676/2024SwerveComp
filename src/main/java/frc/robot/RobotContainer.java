@@ -2,8 +2,7 @@ package frc.robot;
 
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.utils.AutonManager;
-import frc.robot.commands.Intake.PickupCommand;
-import frc.robot.commands.Intake.RotateIntakeCommand;
+import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.auto.AutoRoutines;
 import frc.robot.commands.swerve.TeleopSwerveCommand;
 import frc.robot.constants.DriveConstants;
@@ -14,14 +13,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.IntakeArm;
 
 public class RobotContainer {
   public final SwerveDrive swerve = new SwerveDrive(); // Swerve drive system
   public final IntakeArm intakeArm = new IntakeArm(); // Arm controller
   
-  private final IntakeWheels intakeWheels = new IntakeWheels(); // Cannon controller
   private final Climber climb = new Climber(); // Climber
 
   private final AutonManager autonManager = new AutonManager();
@@ -41,11 +38,11 @@ public class RobotContainer {
 
   private void addAutonomousChoices() {
     autonManager.addDefaultOption("Red / Blue - Shoot 2 Notes and Leave",
-        AutoRoutines.Shoot2Notes(intakeWheels, intakeArm, swerve));
+        AutoRoutines.Shoot2Notes(intakeArm, swerve));
     autonManager.addOption("Red - Shoot 3 Notes and Leave",
-        AutoRoutines.Shoot3NotesRed(intakeWheels, intakeArm, swerve));
+        AutoRoutines.Shoot3NotesRed(intakeArm, swerve));
     autonManager.addOption("Blue - Shoot 3 Notes and Leave",
-        AutoRoutines.Shoot3NotesBlue(intakeWheels, intakeArm, swerve));
+        AutoRoutines.Shoot3NotesBlue(intakeArm, swerve));
   }
 
   private void configureButtonBindings() {
@@ -61,11 +58,8 @@ public class RobotContainer {
     driver.button(1).onTrue(new InstantCommand(swerve::toggleFieldRelative));
     driver.button(8).onTrue(new InstantCommand(swerve::zeroGyro));
 
-    // Intake commands
-    intakeWheels.setDefaultCommand(new PickupCommand(intakeWheels, operator));
-
     // Rotate commands
-    intakeArm.setDefaultCommand(new RotateIntakeCommand(intakeArm, operator));
+    intakeArm.setDefaultCommand(new IntakeCommand(intakeArm, operator)); // Does intake wheels also
     operator.button(XboxController.Button.kX.value).onTrue(new InstantCommand(intakeArm::shootSpeaker));
     operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(intakeArm::shootStage));
     operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(intakeArm::intakeNotePosition));

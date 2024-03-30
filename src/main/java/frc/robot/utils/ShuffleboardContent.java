@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.constants.ModuleConstants;
 import frc.robot.subsystems.IntakeArm;
-import frc.robot.subsystems.IntakeWheels;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.SwerveModule;
 
@@ -115,13 +114,6 @@ public class ShuffleboardContent {
                                 .withSize(1, 1);
         }
         
-        public static void initSensor(IntakeWheels intake) {
-                ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
-
-                drLayout1.addBoolean("Intake Sensor", () -> intake.m_noteDetected).withPosition(1, 2)
-                                .withSize(1, 1);
-        }
-        
         public static void initIntakeArm(IntakeArm intakeArm) {
                 ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
 
@@ -132,6 +124,16 @@ public class ShuffleboardContent {
                 drLayout1.addNumber("Ext Position", () -> (intakeArm.getExtensionPosition())).withPosition(1, 3)
                                 .withSize(1, 1);
                 drLayout1.addNumber("Ext Setpoint", () -> (intakeArm.getExtensionPositionSetpoint())).withPosition(2, 3)
+                                .withSize(1, 1);
+
+                // Intake Sensor
+                drLayout1.addBoolean("Intake Sensor", () -> IntakeArm.m_noteDetected).withPosition(1, 2)
+                                .withSize(1, 1);
+                drLayout1.addBoolean("Intake Note", () -> IntakeArm.m_noteIntake).withPosition(1, 2)
+                                .withSize(1, 1);
+                drLayout1.addBoolean("Reverse Note", () -> IntakeArm.m_noteReverse).withPosition(1, 2)
+                                .withSize(1, 1);
+                drLayout1.addBoolean("Loaded", () -> IntakeArm.m_noteLoaded).withPosition(1, 2)
                                 .withSize(1, 1);
         }
 }

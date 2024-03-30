@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IntakeArmConstants;
 import frc.robot.utils.ShuffleboardContent;
@@ -32,11 +33,23 @@ public class IntakeArm extends SubsystemBase {
   private final WPI_TalonSRX m_motor = new WPI_TalonSRX(IntakeArmConstants.kExtendCanId);
 
   // Shoot Wheels
-  private final CANSparkFlex uppershooterMotor = new CANSparkFlex(IntakeArmConstants.kUpperShootCanId, MotorType.kBrushless);
-  private final CANSparkFlex lowershooterMotor = new CANSparkFlex(IntakeArmConstants.kLowerShootCanId, MotorType.kBrushless);
+  private final CANSparkFlex uppershooterMotor = new CANSparkFlex(IntakeArmConstants.kUpperShootCanId,
+      MotorType.kBrushless);
+  private final CANSparkFlex lowershooterMotor = new CANSparkFlex(IntakeArmConstants.kLowerShootCanId,
+      MotorType.kBrushless);
   private static boolean m_isOnFast = false;
   private static boolean m_isOnSlow = false;
   private static boolean m_isOnBackwards = false;
+
+  // Intake Wheels
+  public static boolean m_noteDetected = false;
+  public static boolean m_noteIntake = true;
+  public static boolean m_noteReverse = false;
+  public static boolean m_noteLoaded = false;
+
+  private final CANSparkFlex m_intakeMotor = new CANSparkFlex(IntakeArmConstants.kIntakeWheelsCanId,
+      MotorType.kBrushless);
+  private AnalogInput m_noteSensor = new AnalogInput(IntakeArmConstants.kIntakeSensorChannel);
 
   public IntakeArm() {
     /*
@@ -102,6 +115,13 @@ public class IntakeArm extends SubsystemBase {
     lowershooterMotor.follow(uppershooterMotor, false);
 
     /*
+     * INTAKE WHEELS
+     */
+    m_intakeMotor.restoreFactoryDefaults();
+    m_intakeMotor.setInverted(true);
+    m_intakeMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
+
+    /*
      * SHUFFLEBOARD SETUP
      */
     ShuffleboardContent.initIntakeArm(this);
@@ -155,7 +175,8 @@ public class IntakeArm extends SubsystemBase {
 
   public void setReferencePeriodic() {
     // Extend Setpoint
-    m_extendInches = MathUtil.clamp(m_extendInches, IntakeArmConstants.kMinExtendPosition, IntakeArmConstants.kMaxExtendPosition);
+    m_extendInches = MathUtil.clamp(m_extendInches, IntakeArmConstants.kMinExtendPosition,
+        IntakeArmConstants.kMaxExtendPosition);
     m_motor.set(ControlMode.Position, m_extendInches * IntakeArmConstants.kIntakeArmEncoderExtendFactor);
 
     // Rotate Setpoint
@@ -178,6 +199,12 @@ public class IntakeArm extends SubsystemBase {
     } else {
       uppershooterMotor.set(0);
     }
+
+    // Intake Sensor
+    if (m_noteSensor.getValue() > 2000)
+      m_noteDetected = true;
+    else
+      m_noteDetected = false;
   }
 
   // Rotate Arm
@@ -222,5 +249,48 @@ public class IntakeArm extends SubsystemBase {
     m_isOnFast = false;
     m_isOnSlow = false;
     m_isOnBackwards = !m_isOnBackwards;
+  }
+
+  // Intake Wheels
+  public void intake(double throttle) {
+
+    if (m_isOnFast || m_isOnSlow) {
+      if (Math.abs(throttle) > 0.05)
+        m_intakeMotor.set(throttle);
+      else
+        m_intakeMotor.set(0);
+    }
+
+    if (m_isOnBackwards) {
+      if (m_noteIntake) {
+        if (Math.abs(throttle) > 0.05) {
+          m_intakeMotor.set(throttle);
+          if (m_noteDetected) {
+            m_noteIntake = false;
+            m_noteReverse = true;
+          }
+        } else {
+          m_intakeMotor.set(0);
+        }
+      }
+
+      if (m_noteReverse) {
+        m_intakeMotor.set(-0.1);
+
+        if (!m_noteDetected) {
+          m_noteReverse = false;
+          m_noteLoaded = true;
+        }
+      }
+
+      if (m_noteLoaded) {
+        m_intakeMotor.set(0);
+
+        if (Math.abs(throttle) <= 0.05) {
+          m_noteLoaded = false;
+          m_noteIntake = true;
+        }
+      }
+    }
   }
 }

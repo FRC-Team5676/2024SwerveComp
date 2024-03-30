@@ -10,6 +10,7 @@ public final class IntakeArmConstants {
     public static final int kExtendCanId = 60;
     public static final int kUpperShootCanId = 62;
     public static final int kLowerShootCanId = 59;
+    public static final int kIntakeWheelsCanId = 61;
 
     // Rotate
     public static final double kMinRotatePosition = Units.degreesToRadians(0); // -87.5
@@ -46,4 +47,7 @@ public final class IntakeArmConstants {
     public static final double kShootSpeedForwardFast = 0.55;
     public static final double kShootSpeedForwardSlow = 0.25;
     public static final double kShootSpeedBackwards = -0.1;
+
+    // Intake Wheels
+    public static final int kIntakeSensorChannel = 0;
   }
