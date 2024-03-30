@@ -129,11 +129,11 @@ public class ShuffleboardContent {
                 // Intake Sensor
                 drLayout1.addBoolean("Intake Sensor", () -> IntakeArm.m_noteDetected).withPosition(1, 2)
                                 .withSize(1, 1);
-                drLayout1.addBoolean("Intake Note", () -> IntakeArm.m_noteIntake).withPosition(1, 2)
+                drLayout1.addBoolean("Intake Note", () -> IntakeArm.m_noteIntake).withPosition(2, 2)
                                 .withSize(1, 1);
-                drLayout1.addBoolean("Reverse Note", () -> IntakeArm.m_noteReverse).withPosition(1, 2)
+                drLayout1.addBoolean("Reverse Note", () -> IntakeArm.m_noteReverse).withPosition(3, 2)
                                 .withSize(1, 1);
-                drLayout1.addBoolean("Loaded", () -> IntakeArm.m_noteLoaded).withPosition(1, 2)
+                drLayout1.addBoolean("Loaded", () -> IntakeArm.m_noteLoaded).withPosition(4, 2)
                                 .withSize(1, 1);
         }
 }
