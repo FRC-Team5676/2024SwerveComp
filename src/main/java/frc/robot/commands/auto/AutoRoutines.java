@@ -10,22 +10,20 @@ import frc.robot.subsystems.SwerveDrive;
 import frc.robot.constants.IntakeArmConstants;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeWheels;
-import frc.robot.subsystems.ShooterWheels;
 
 public class AutoRoutines {
-        public static Command Shoot2Notes(ShooterWheels shooter, IntakeWheels intake, IntakeArm intakeArm,
-                        SwerveDrive swerve) {
+        public static Command Shoot2Notes(IntakeWheels intake, IntakeArm intakeArm, SwerveDrive swerve) {
                 return Commands.sequence(
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
+                                new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
                                 new WaitCommand(1),
                                 new StartEndCommand(() -> intake.intake(-1),
                                                 () -> intake.intake(0),
                                                 intake)
                                                 .withTimeout(1),
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
+                                new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
                                 new WaitCommand(1),
-                                new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                                new InstantCommand(() -> intakeArm.runWheelsBackwards(), intakeArm),
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                                 new WaitCommand(1),
                                 new ParallelCommandGroup(
@@ -43,13 +41,13 @@ public class AutoRoutines {
                                                 () -> intake.intake(0),
                                                 intake)
                                                 .withTimeout(0.1),
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
+                                new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
                                 new WaitCommand(1),
                                 new StartEndCommand(() -> intake.intake(-1),
                                                 () -> intake.intake(0),
                                                 intake)
                                                 .withTimeout(1),
-                                new InstantCommand(() -> shooter.runWheels(), shooter),
+                                new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
                                 new WaitCommand(1),
                                 new ParallelCommandGroup(
                                         new StartEndCommand(() -> swerve.teleopDrive(0.35, 0, 0),
@@ -57,17 +55,17 @@ public class AutoRoutines {
                                                         swerve)
                                                         .withTimeout(3), // was 2 seconds
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm).withTimeout(2),
-                                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter).withTimeout(2)));
+                                        new InstantCommand(() -> intakeArm.runWheelsBackwards(), intakeArm).withTimeout(2)));
         }
 
-        public static Command Shoot3NotesRed(ShooterWheels shooter, IntakeWheels intake, IntakeArm intakeArm, SwerveDrive swerve) {
+        public static Command Shoot3NotesRed(IntakeWheels intake, IntakeArm intakeArm, SwerveDrive swerve) {
                 return Commands.sequence(
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                         // Shoot Start
-                        new InstantCommand(() -> shooter.runWheels(), shooter), 
+                        new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm), 
                         new WaitCommand(1), 
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1),
-                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsBackwards(), intakeArm),
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new WaitCommand(0.5), 
@@ -82,12 +80,12 @@ public class AutoRoutines {
                                 ),
                         new StartEndCommand(() -> intake.intake(0.1), () -> intake.intake(0), intake).withTimeout(0.1),
                         // Shoot Start
-                        new InstantCommand(() -> shooter.runWheels(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
                         new WaitCommand(1.2),
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve),
                         new WaitCommand(0.5),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
-                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsBackwards(), intakeArm),
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new WaitCommand(1), 
@@ -100,10 +98,10 @@ public class AutoRoutines {
                         new WaitCommand(1.05), 
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve).withTimeout(0.1),
                         // Shoot Start
-                        new InstantCommand(() -> shooter.runWheels(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
                         new WaitCommand(0.9),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
-                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsBackwards(), intakeArm),
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new InstantCommand(() -> swerve.teleopDrive(0.4, 0, 0), swerve),
@@ -111,14 +109,14 @@ public class AutoRoutines {
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve));
         }
 
-        public static Command Shoot3NotesBlue(ShooterWheels shooter, IntakeWheels intake, IntakeArm intakeArm, SwerveDrive swerve) {
+        public static Command Shoot3NotesBlue(IntakeWheels intake, IntakeArm intakeArm, SwerveDrive swerve) {
                 return Commands.sequence(
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                         // Shoot Start
-                        new InstantCommand(() -> shooter.runWheels(), shooter), 
+                        new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm), 
                         new WaitCommand(1), 
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(1),
-                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsBackwards(), intakeArm),
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new WaitCommand(0.5), 
@@ -133,12 +131,12 @@ public class AutoRoutines {
                                 ),
                         new StartEndCommand(() -> intake.intake(0.1), () -> intake.intake(0), intake).withTimeout(0.1),
                         // Shoot Start
-                        new InstantCommand(() -> shooter.runWheels(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
                         new WaitCommand(1.2),
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve),
                         new WaitCommand(0.5),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
-                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsBackwards(), intakeArm),
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new WaitCommand(1), 
@@ -151,10 +149,10 @@ public class AutoRoutines {
                         new WaitCommand(1.05), 
                         new InstantCommand(() -> swerve.teleopDrive(0, 0, 0), swerve).withTimeout(0.1),
                         // Shoot Start
-                        new InstantCommand(() -> shooter.runWheels(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
                         new WaitCommand(0.9),
                         new StartEndCommand(() -> intake.intake(-1), () -> intake.intake(0), intake).withTimeout(0.5),
-                        new InstantCommand(() -> shooter.runWheelsBackwards(), shooter),
+                        new InstantCommand(() -> intakeArm.runWheelsBackwards(), intakeArm),
                         // Shoot End
                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm),
                         new InstantCommand(() -> swerve.teleopDrive(0.4, 0, 0), swerve),

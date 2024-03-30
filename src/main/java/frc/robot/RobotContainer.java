@@ -1,7 +1,6 @@
 package frc.robot;
 
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.ShooterWheels;
 import frc.robot.utils.AutonManager;
 import frc.robot.commands.Intake.PickupCommand;
 import frc.robot.commands.Intake.RotateIntakeCommand;
@@ -20,15 +19,14 @@ import frc.robot.subsystems.IntakeArm;
 
 public class RobotContainer {
   public final SwerveDrive swerve = new SwerveDrive(); // Swerve drive system
-  public final ShooterWheels shooterWheels = new ShooterWheels(); // Pickup intake controller
+  public final IntakeArm intakeArm = new IntakeArm(); // Arm controller
+  
+  private final IntakeWheels intakeWheels = new IntakeWheels(); // Cannon controller
+  private final Climber climb = new Climber(); // Climber
 
   private final AutonManager autonManager = new AutonManager();
   private final CommandJoystick driver = new CommandJoystick(1);
   private final CommandXboxController operator = new CommandXboxController(0);
-
-  private final IntakeArm intakeArm = new IntakeArm(); // Arm controller
-  private final IntakeWheels intakeWheels = new IntakeWheels(); // Cannon controller
-  private final Climber climb = new Climber(); // Climber
 
   public RobotContainer() {
     addAutonomousChoices();
@@ -43,11 +41,11 @@ public class RobotContainer {
 
   private void addAutonomousChoices() {
     autonManager.addDefaultOption("Red / Blue - Shoot 2 Notes and Leave",
-        AutoRoutines.Shoot2Notes(shooterWheels, intakeWheels, intakeArm, swerve));
+        AutoRoutines.Shoot2Notes(intakeWheels, intakeArm, swerve));
     autonManager.addOption("Red - Shoot 3 Notes and Leave",
-        AutoRoutines.Shoot3NotesRed(shooterWheels, intakeWheels, intakeArm, swerve));
+        AutoRoutines.Shoot3NotesRed(intakeWheels, intakeArm, swerve));
     autonManager.addOption("Blue - Shoot 3 Notes and Leave",
-        AutoRoutines.Shoot3NotesBlue(shooterWheels, intakeWheels, intakeArm, swerve));
+        AutoRoutines.Shoot3NotesBlue(intakeWheels, intakeArm, swerve));
   }
 
   private void configureButtonBindings() {
@@ -74,10 +72,10 @@ public class RobotContainer {
     operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::shootAmp));
 
     // Shoot commands
-    operator.button(XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(shooterWheels::runWheels));
-    operator.button(XboxController.Button.kRightBumper.value).onFalse(new InstantCommand(shooterWheels::runWheelsBackwards));
-    operator.button(XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(shooterWheels::runWheels));
-    operator.button(XboxController.Button.kLeftBumper.value).onFalse(new InstantCommand(shooterWheels::runWheelsBackwards));
+    operator.button(XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(intakeArm::runWheelsFast));
+    operator.button(XboxController.Button.kRightBumper.value).onFalse(new InstantCommand(intakeArm::runWheelsBackwards));
+    operator.button(XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(intakeArm::runWheelsFast));
+    operator.button(XboxController.Button.kLeftBumper.value).onFalse(new InstantCommand(intakeArm::runWheelsBackwards));
 
     // Climb commands
     driver.button(3).onTrue(new InstantCommand(climb::climbDown));

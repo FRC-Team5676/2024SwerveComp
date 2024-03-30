@@ -8,6 +8,8 @@ public final class IntakeArmConstants {
     public static final int kLeftCanId = 21;
     public static final int kRightCanId = 23;
     public static final int kExtendCanId = 60;
+    public static final int kUpperShootCanId = 62;
+    public static final int kLowerShootCanId = 59;
 
     // Rotate
     public static final double kMinRotatePosition = Units.degreesToRadians(0); // -87.5
@@ -39,5 +41,9 @@ public final class IntakeArmConstants {
     public static final double kMSafeExtendPosition = 0.3;
     public static final double kMaxExtendPosition = 2.45;
     public static final double kIntakeArmEncoderExtendFactor = 5 * 10 * 1024 / 0.8;
-  
-}
+
+    // Shoot
+    public static final double kShootSpeedForwardFast = 0.55;
+    public static final double kShootSpeedForwardSlow = 0.25;
+    public static final double kShootSpeedBackwards = -0.1;
+  }

@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeArm extends SubsystemBase {
@@ -21,12 +22,21 @@ public class IntakeArm extends SubsystemBase {
   public double m_positionRadians;
   public double m_extendInches;
 
+  // Arm Rotate
   private final RelativeEncoder m_leftEncoder;
   private final CANSparkMax m_leftSparkMax;
   private final CANSparkMax m_rightSparkMax;
   private final SparkPIDController m_leftPIDController;
 
+  // Arm Extension
   private final WPI_TalonSRX m_motor = new WPI_TalonSRX(IntakeArmConstants.kExtendCanId);
+
+  // Shoot Wheels
+  private final CANSparkFlex uppershooterMotor = new CANSparkFlex(IntakeArmConstants.kUpperShootCanId, MotorType.kBrushless);
+  private final CANSparkFlex lowershooterMotor = new CANSparkFlex(IntakeArmConstants.kLowerShootCanId, MotorType.kBrushless);
+  private static boolean m_isOnFast = false;
+  private static boolean m_isOnSlow = false;
+  private static boolean m_isOnBackwards = false;
 
   public IntakeArm() {
     /*
@@ -81,6 +91,19 @@ public class IntakeArm extends SubsystemBase {
 
     m_extendInches = getRotationPosition();
 
+    /*
+     * SHOOT WHEELS SETUP
+     */
+    uppershooterMotor.restoreFactoryDefaults();
+    lowershooterMotor.restoreFactoryDefaults();
+    uppershooterMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
+    lowershooterMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
+    uppershooterMotor.setInverted(false);
+    lowershooterMotor.follow(uppershooterMotor, false);
+
+    /*
+     * SHUFFLEBOARD SETUP
+     */
     ShuffleboardContent.initIntakeArm(this);
   }
 
@@ -144,25 +167,60 @@ public class IntakeArm extends SubsystemBase {
           IntakeArmConstants.kMaxRotatePosition);
     }
     m_leftPIDController.setReference(m_positionRadians, CANSparkMax.ControlType.kPosition);
+
+    // Shoot Wheels
+    if (m_isOnFast) {
+      uppershooterMotor.set(IntakeArmConstants.kShootSpeedForwardFast);
+    } else if (m_isOnSlow) {
+      uppershooterMotor.set(IntakeArmConstants.kShootSpeedForwardSlow);
+    } else if (m_isOnBackwards) {
+      uppershooterMotor.set(IntakeArmConstants.kShootSpeedBackwards);
+    } else {
+      uppershooterMotor.set(0);
+    }
   }
 
+  // Rotate Arm
   public void intakeNotePosition() {
     m_positionRadians = IntakeArmConstants.kIntakePosition;
     m_extendInches = IntakeArmConstants.kMinExtendPosition;
+    runWheelsBackwards();
   }
 
   public void shootSpeaker() {
     m_positionRadians = IntakeArmConstants.kShootSpeaker;
     m_extendInches = IntakeArmConstants.kMinExtendPosition;
+    runWheelsFast();
   }
 
   public void shootStage() {
     m_positionRadians = IntakeArmConstants.kShootStage;
     m_extendInches = IntakeArmConstants.kMinExtendPosition;
+    runWheelsFast();
   }
 
   public void shootAmp() {
     m_positionRadians = IntakeArmConstants.kAmpPosition;
     m_extendInches = IntakeArmConstants.kMaxExtendPosition;
+    runWheelsSlow();
+  }
+
+  // Shoot Wheels
+  public void runWheelsFast() {
+    m_isOnFast = true;
+    m_isOnSlow = false;
+    m_isOnBackwards = false;
+  }
+
+  public void runWheelsSlow() {
+    m_isOnFast = false;
+    m_isOnSlow = true;
+    m_isOnBackwards = false;
+  }
+
+  public void runWheelsBackwards() {
+    m_isOnFast = false;
+    m_isOnSlow = false;
+    m_isOnBackwards = !m_isOnBackwards;
   }
 }
