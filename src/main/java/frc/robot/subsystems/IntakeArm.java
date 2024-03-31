@@ -47,6 +47,7 @@ public class IntakeArm extends SubsystemBase {
   public static boolean m_noteIntake = true;
   public static boolean m_noteReverse = false;
   public static boolean m_noteLoaded = false;
+  public static boolean m_disableNoteSensor = false;
 
   private final CANSparkFlex m_intakeMotor = new CANSparkFlex(IntakeArmConstants.kIntakeWheelsCanId,
       MotorType.kBrushless);
@@ -267,23 +268,16 @@ public class IntakeArm extends SubsystemBase {
   // Intake Wheels
   public void intake(double throttle) {
 
-    if (m_isOnFast || m_isOnSlow) {
-      if (Math.abs(throttle) > 0.05)
-        m_intakeMotor.set(throttle);
-      else
-        m_intakeMotor.set(0);
-    }
+    if (m_isOnFast || m_isOnSlow || m_disableNoteSensor) {
+      m_intakeMotor.set(throttle);
+      
+    } else if (m_isOnBackwards || m_isOff) {
 
-    if (m_isOnBackwards || m_isOff) {
       if (m_noteIntake) {
-        if (Math.abs(throttle) > 0.05) {
-          m_intakeMotor.set(throttle);
-          if (m_noteDetected) {
-            m_noteIntake = false;
-            m_noteReverse = true;
-          }
-        } else {
-          m_intakeMotor.set(0);
+        m_intakeMotor.set(throttle);
+        if (m_noteDetected) {
+          m_noteIntake = false;
+          m_noteReverse = true;
         }
       }
 
@@ -305,5 +299,15 @@ public class IntakeArm extends SubsystemBase {
         }
       }
     }
+  }
+
+  public void toggleNoteSensor() {
+    m_disableNoteSensor = !m_disableNoteSensor;
+  }
+
+  public void resetNoteSensor() {
+    m_noteIntake = true;
+    m_noteReverse = false;
+    m_noteLoaded = false;
   }
 }

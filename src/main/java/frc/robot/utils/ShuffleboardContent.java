@@ -135,5 +135,7 @@ public class ShuffleboardContent {
                                 .withSize(1, 1);
                 drLayout1.addBoolean("Loaded", () -> IntakeArm.m_noteLoaded).withPosition(4, 2)
                                 .withSize(1, 1);
+                drLayout1.addBoolean("Use Note Sensor", () -> !IntakeArm.m_disableNoteSensor).withPosition(6, 2)
+                                .withSize(1, 1);
         }
 }
