@@ -117,6 +117,7 @@ public class ShuffleboardContent {
         public static void initIntakeArm(IntakeArm intakeArm) {
                 ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
 
+                // Arm Rotation
                 drLayout1.addNumber("Rotate Position", () -> Units.radiansToDegrees(intakeArm.getRotationPosition())).withPosition(1, 1)
                                 .withSize(1, 1);
                 drLayout1.addNumber("Rotate Setpoint", () -> Units.radiansToDegrees(intakeArm.getRotationPositionSetpoint())).withPosition(2, 1)
