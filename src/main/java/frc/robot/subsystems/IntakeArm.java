@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IntakeArmConstants;
 import frc.robot.utils.ShuffleboardContent;
@@ -48,6 +49,10 @@ public class IntakeArm extends SubsystemBase {
   public static boolean m_noteReverse = false;
   public static boolean m_noteLoaded = false;
   public static boolean m_disableNoteSensor = false;
+
+  // Lights
+  private Spark m_ledController = new Spark(IntakeArmConstants.kLedControllerChannel);
+  public static double m_color = 0.77; // GREEN
 
   private final CANSparkFlex m_intakeMotor = new CANSparkFlex(IntakeArmConstants.kIntakeWheelsCanId,
       MotorType.kBrushless);
@@ -209,6 +214,18 @@ public class IntakeArm extends SubsystemBase {
       m_noteDetected = true;
     else
       m_noteDetected = false;
+
+    // Set LED Colors
+    if (m_disableNoteSensor)
+      m_color = 0.61; // RED
+    else if (m_noteIntake)
+      m_color = 0.77; // GREEN
+    else if (m_noteReverse)
+      m_color = 0.69; // YELLOW
+    else if (m_noteLoaded)
+      m_color = 0.87; // BLUE
+      
+    m_ledController.set(m_color);
   }
 
   // Rotate Arm

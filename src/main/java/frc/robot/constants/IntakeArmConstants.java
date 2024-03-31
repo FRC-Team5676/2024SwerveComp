@@ -50,4 +50,7 @@ public final class IntakeArmConstants {
 
     // Intake Wheels
     public static final int kIntakeSensorChannel = 0;
+
+    // LED Lights
+    public static final int kLedControllerChannel = 0;
   }
