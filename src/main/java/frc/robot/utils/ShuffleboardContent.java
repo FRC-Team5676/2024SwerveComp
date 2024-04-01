@@ -117,6 +117,7 @@ public class ShuffleboardContent {
         public static void initIntakeArm(IntakeArm intakeArm) {
                 ShuffleboardTab drLayout1 = Shuffleboard.getTab("Intake Arm");
 
+                // Arm Rotation
                 drLayout1.addNumber("Rotate Position", () -> Units.radiansToDegrees(intakeArm.getRotationPosition())).withPosition(1, 1)
                                 .withSize(1, 1);
                 drLayout1.addNumber("Rotate Setpoint", () -> Units.radiansToDegrees(intakeArm.getRotationPositionSetpoint())).withPosition(2, 1)
@@ -134,6 +135,8 @@ public class ShuffleboardContent {
                 drLayout1.addBoolean("Reverse Note", () -> IntakeArm.m_noteReverse).withPosition(3, 2)
                                 .withSize(1, 1);
                 drLayout1.addBoolean("Loaded", () -> IntakeArm.m_noteLoaded).withPosition(4, 2)
+                                .withSize(1, 1);
+                drLayout1.addBoolean("Use Note Sensor", () -> !IntakeArm.m_disableNoteSensor).withPosition(6, 2)
                                 .withSize(1, 1);
         }
 }

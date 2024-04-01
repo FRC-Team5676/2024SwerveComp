@@ -64,6 +64,8 @@ public class RobotContainer {
     operator.button(XboxController.Button.kY.value).onTrue(new InstantCommand(intakeArm::shootStage));
     operator.button(XboxController.Button.kA.value).onTrue(new InstantCommand(intakeArm::intakeNotePosition));
     operator.button(XboxController.Button.kB.value).onTrue(new InstantCommand(intakeArm::shootAmp));
+    operator.button(XboxController.Button.kStart.value).onTrue(new InstantCommand(intakeArm::toggleNoteSensor));
+    operator.button(XboxController.Button.kBack.value).onTrue(new InstantCommand(intakeArm::resetNoteSensor));
 
     // Shoot commands
     operator.button(XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(intakeArm::runWheelsFast));
@@ -76,5 +78,7 @@ public class RobotContainer {
     driver.button(3).onFalse(new InstantCommand(climb::climbStop));
     driver.button(4).onTrue(new InstantCommand(climb::climbUp));
     driver.button(4).onFalse(new InstantCommand(climb::climbStop));
+    driver.button(11).onTrue(new InstantCommand(intakeArm::toggleNoteSensor));
+    driver.button(12).onTrue(new InstantCommand(intakeArm::resetNoteSensor));
   };
 }
