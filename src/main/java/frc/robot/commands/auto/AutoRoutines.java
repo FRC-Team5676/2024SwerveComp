@@ -15,7 +15,7 @@ public class AutoRoutines {
                 return Commands.sequence(
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
                                 new InstantCommand(() -> intakeArm.runWheelsFast(), intakeArm),
-                                new WaitCommand(1),
+                                new WaitCommand(1.2),
                                 new StartEndCommand(() -> intakeArm.intake(-1),
                                                 () -> intakeArm.intake(0),
                                                 intakeArm)
@@ -34,7 +34,7 @@ public class AutoRoutines {
                                 new ParallelCommandGroup(
                                         new InstantCommand(() -> swerve.teleopDrive(-0.3, 0, 0), swerve).withTimeout(2),
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker),
-                                                        intakeArm).withTimeout(2)),
+                                                        intakeArm).withTimeout(1.8)),
                                 new WaitCommand(0.5),
                                 new StartEndCommand(() -> intakeArm.intake(0.1),
                                                 () -> intakeArm.intake(0),
@@ -52,7 +52,7 @@ public class AutoRoutines {
                                         new StartEndCommand(() -> swerve.teleopDrive(0.35, 0, 0),
                                                         () -> swerve.teleopDrive(0, 0, 0),
                                                         swerve)
-                                                        .withTimeout(3), // was 2 seconds
+                                                        .withTimeout(2), // was 2 seconds
                                         new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kIntakePosition), intakeArm).withTimeout(2)));
         }
 
