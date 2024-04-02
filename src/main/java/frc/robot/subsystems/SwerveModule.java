@@ -127,7 +127,7 @@ public class SwerveModule extends SubsystemBase {
                 ShuffleboardContent.initCoderBooleanShuffleboard(this);
         }
 
-        public void setDesiredState(SwerveModuleState desiredState) {
+        public void setDesiredStateTeleop(SwerveModuleState desiredState) {
                 // Apply chassis angular offset to the desired state.
                 SwerveModuleState correctedDesiredState = new SwerveModuleState();
                 correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;

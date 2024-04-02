@@ -185,10 +185,10 @@ public class SwerveDrive extends SubsystemBase {
     private void setRobotState(SwerveModuleState[] swerveModuleStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
-        m_frontLeft.setDesiredState(swerveModuleStates[0]);
-        m_frontRight.setDesiredState(swerveModuleStates[1]);
-        m_rearLeft.setDesiredState(swerveModuleStates[2]);
-        m_rearRight.setDesiredState(swerveModuleStates[3]);
+        m_frontLeft.setDesiredStateTeleop(swerveModuleStates[0]);
+        m_frontRight.setDesiredStateTeleop(swerveModuleStates[1]);
+        m_rearLeft.setDesiredStateTeleop(swerveModuleStates[2]);
+        m_rearRight.setDesiredStateTeleop(swerveModuleStates[3]);
     }
 
     private SwerveModulePosition[] getPositions() {
