@@ -128,6 +128,29 @@ public class SwerveModule extends SubsystemBase {
         }
 
         public void setDesiredStateTeleop(SwerveModuleState desiredState) {
+                // Common Drive Functions
+                commonDriveFunctions(desiredState);
+
+                // Command driving and turning SPARKS MAX towards their respective setpoints.
+                m_drivePIDController.setReference(m_currentState.speedMetersPerSecond,
+                                CANSparkMax.ControlType.kVelocity);
+                m_turnPIDController.setReference(m_currentState.angle.getRadians(),
+                                CANSparkMax.ControlType.kPosition);
+        }
+
+        public void setDesiredStateAuton(SwerveModuleState desiredState) {
+                // Common Drive Functions
+                commonDriveFunctions(desiredState);
+
+                // Command driving and turning SPARKS MAX towards their respective setpoints.
+                m_drivePIDController.setReference(m_currentPosition.distanceMeters,
+                                CANSparkMax.ControlType.kPosition);
+                m_turnPIDController.setReference(m_currentState.angle.getRadians(),
+                                CANSparkMax.ControlType.kPosition);
+
+        }
+
+        private void commonDriveFunctions(SwerveModuleState desiredState) {
                 // Apply chassis angular offset to the desired state.
                 SwerveModuleState correctedDesiredState = new SwerveModuleState();
                 correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
@@ -137,17 +160,12 @@ public class SwerveModule extends SubsystemBase {
                 SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
                                 new Rotation2d(m_turnEncoder.getPosition() + m_turnAngleCorrectionRad));
 
-                // Command driving and turning SPARKS MAX towards their respective setpoints.
-                m_drivePIDController.setReference(optimizedDesiredState.speedMetersPerSecond,
-                                CANSparkMax.ControlType.kVelocity);
-                m_turnPIDController.setReference(optimizedDesiredState.angle.getRadians(),
-                                CANSparkMax.ControlType.kPosition);
-
                 // Set current state and position
                 m_currentState = optimizedDesiredState;
                 m_currentPosition = new SwerveModulePosition(
                                 m_currentPosition.distanceMeters + (m_currentState.speedMetersPerSecond * 0.02),
                                 m_currentState.angle);
+
         }
 
         public SwerveModulePosition getPosition() {
