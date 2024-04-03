@@ -38,7 +38,7 @@ public final class IntakeArmConstants {
     public static final double throttleMultiplier = 0.5;
 
     // Extend
-    public static final double kMinExtendPosition = 0.2;
+    public static final double kMinExtendPosition = 0.02;
     public static final double kMSafeExtendPosition = 0.3;
     public static final double kMaxExtendPosition = 2.45;
     public static final double kIntakeArmEncoderExtendFactor = 5 * 10 * 1024 / 0.8;
