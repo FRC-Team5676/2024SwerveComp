@@ -3,7 +3,8 @@ package frc.robot;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.utils.AutonManager;
 import frc.robot.commands.Intake.IntakeCommand;
-import frc.robot.commands.auto.AutoRoutines;
+import frc.robot.commands.auto.AutoRoutinesPosition;
+import frc.robot.commands.auto.AutoRoutinesTimed;
 import frc.robot.commands.swerve.TeleopSwerveCommand;
 import frc.robot.constants.DriveConstants;
 import edu.wpi.first.math.MathUtil;
@@ -38,11 +39,13 @@ public class RobotContainer {
 
   private void addAutonomousChoices() {
     autonManager.addDefaultOption("Red / Blue - Shoot 2 Notes and Leave",
-        AutoRoutines.Shoot2Notes(intakeArm, swerve));
+        AutoRoutinesTimed.Shoot2Notes(intakeArm, swerve));
     autonManager.addOption("Red - Shoot 3 Notes and Leave",
-        AutoRoutines.Shoot3NotesRed(intakeArm, swerve));
+        AutoRoutinesTimed.Shoot3NotesRed(intakeArm, swerve));
     autonManager.addOption("Blue - Shoot 3 Notes and Leave",
-        AutoRoutines.Shoot3NotesBlue(intakeArm, swerve));
+        AutoRoutinesTimed.Shoot3NotesBlue(intakeArm, swerve));
+    autonManager.addOption("Test",
+        AutoRoutinesPosition.testCommand(intakeArm, swerve));
   }
 
   private void configureButtonBindings() {

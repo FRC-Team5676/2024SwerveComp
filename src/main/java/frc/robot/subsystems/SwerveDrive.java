@@ -1,13 +1,6 @@
 package frc.robot.subsystems;
 
-import java.util.Optional;
-
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -21,9 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.DriveConstants;
-import frc.robot.constants.ModuleConstants;
 import frc.robot.utils.Enums.ModulePosition;
-import frc.robot.utils.ShuffleboardContent;
 
 public class SwerveDrive extends SubsystemBase {
     public static final SwerveDriveKinematics m_driveKinematics = new SwerveDriveKinematics(
@@ -32,16 +23,6 @@ public class SwerveDrive extends SubsystemBase {
             new Translation2d(-DriveConstants.kRobotWidth / 2, DriveConstants.kRobotLength / 2), // Rear Left
             new Translation2d(-DriveConstants.kRobotWidth / 2, -DriveConstants.kRobotLength / 2)); // Rear Right
 
-    private static final double m_moduleOffset = new Translation2d(DriveConstants.kRobotWidth / 2,
-            DriveConstants.kRobotLength / 2).getNorm();
-    private static final HolonomicPathFollowerConfig m_pathFollowerConfig = new HolonomicPathFollowerConfig(
-            new PIDConstants(ModuleConstants.kDriveP, ModuleConstants.kDriveI, ModuleConstants.kDriveD,
-                    ModuleConstants.kDriveFF), // Translation constants
-            new PIDConstants(ModuleConstants.kTurnD, ModuleConstants.kTurnI, ModuleConstants.kTurnD,
-                    ModuleConstants.kTurnFF), // Rotation constants
-            DriveConstants.kMaxSpeedMetersPerSecond,
-            m_moduleOffset, // Drive base radius (distance from center to furthest module)
-            new ReplanningConfig());
     private final SwerveModule m_frontLeft = new SwerveModule(
             ModulePosition.FRONT_LEFT,
             DriveConstants.kFrontLeftDriveMotorCanId,
@@ -82,29 +63,6 @@ public class SwerveDrive extends SubsystemBase {
                     m_rearRight.getPosition()
             });
 
-    public SwerveDrive() {
-        AutoBuilder.configureHolonomic(
-                this::getPose,
-                this::resetPose,
-                this::getSpeeds,
-                this::autonDriveRobotRelative,
-                m_pathFollowerConfig,
-                () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red
-                    // alliance
-                    // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                    Optional<Alliance> alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                this);
-        ShuffleboardContent.initGyro(this);
-    }
-
     @Override
     public void periodic() {
         // Update the odometry in the periodic block
@@ -136,14 +94,32 @@ public class SwerveDrive extends SubsystemBase {
                                 Rotation2d.fromDegrees(getYaw()))
                         : new ChassisSpeeds(throttleSpeed, strafeSpeed, rotationSpeed));
 
-        setRobotState(swerveModuleStates);
+        setRobotStateTeleop(swerveModuleStates);
     }
 
-    public void autonDriveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+    public void autonDriveRobotRelative(double metersPerSec, double xMeters, double yMeters, double angleRad) {
 
-        SwerveModuleState[] swerveModuleStates = m_driveKinematics.toSwerveModuleStates(targetSpeeds);
-        setRobotState(swerveModuleStates);
+        if (DriverStation.getAlliance().get() != null) {
+            if (DriverStation.getAlliance().get() == Alliance.Red) {
+                xMeters = -xMeters;
+            }
+        }
+        double distanceToTarget = Math.sqrt(Math.pow(xMeters, 2) + Math.pow(yMeters, 2));
+        double totalSeconds = distanceToTarget / metersPerSec;
+
+        // Convert the commanded speeds into the correct units for the drivetrain
+        double throttleSpeed = xMeters / totalSeconds;
+        double strafeSpeed = yMeters / totalSeconds;
+        double rotationSpeed = angleRad / (2 * Math.PI);
+
+        for (double i = 0; i >= totalSeconds; i += 0.02) {
+            ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(throttleSpeed, strafeSpeed,
+                    rotationSpeed, Rotation2d.fromDegrees(getYaw()));
+            ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+            SwerveModuleState[] swerveModuleStates = m_driveKinematics.toSwerveModuleStates(targetSpeeds);
+            setRobotStateAuton(swerveModuleStates);
+        }
     }
 
     public void zeroGyro() {
@@ -182,13 +158,22 @@ public class SwerveDrive extends SubsystemBase {
         return m_gyro.getAngle();
     }
 
-    private void setRobotState(SwerveModuleState[] swerveModuleStates) {
+    private void setRobotStateTeleop(SwerveModuleState[] swerveModuleStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
-        m_frontLeft.setDesiredState(swerveModuleStates[0]);
-        m_frontRight.setDesiredState(swerveModuleStates[1]);
-        m_rearLeft.setDesiredState(swerveModuleStates[2]);
-        m_rearRight.setDesiredState(swerveModuleStates[3]);
+        m_frontLeft.setDesiredStateTeleop(swerveModuleStates[0]);
+        m_frontRight.setDesiredStateTeleop(swerveModuleStates[1]);
+        m_rearLeft.setDesiredStateTeleop(swerveModuleStates[2]);
+        m_rearRight.setDesiredStateTeleop(swerveModuleStates[3]);
+    }
+
+    private void setRobotStateAuton(SwerveModuleState[] swerveModuleStates) {
+        SwerveDriveKinematics.desaturateWheelSpeeds(
+                swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+        m_frontLeft.setDesiredStateAuton(swerveModuleStates[0]);
+        m_frontRight.setDesiredStateAuton(swerveModuleStates[1]);
+        m_rearLeft.setDesiredStateAuton(swerveModuleStates[2]);
+        m_rearRight.setDesiredStateAuton(swerveModuleStates[3]);
     }
 
     private SwerveModulePosition[] getPositions() {

@@ -10,7 +10,7 @@ import frc.robot.subsystems.SwerveDrive;
 import frc.robot.constants.IntakeArmConstants;
 import frc.robot.subsystems.IntakeArm;
 
-public class AutoRoutines {
+public class AutoRoutinesTimed {
         public static Command Shoot2Notes(IntakeArm intakeArm, SwerveDrive swerve) {
                 return Commands.sequence(
                                 new InstantCommand(() -> intakeArm.setIntakePosition(IntakeArmConstants.kShootSpeaker), intakeArm),
