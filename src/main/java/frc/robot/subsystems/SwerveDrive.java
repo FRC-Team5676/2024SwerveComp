@@ -99,8 +99,12 @@ public class SwerveDrive extends SubsystemBase {
 
     public void autonDriveRobotRelative(double metersPerSec, double xMeters, double yMeters, double angleRad) {
 
-        Translation2d target = new Translation2d(xMeters, yMeters);
-        double distanceToTarget = target.getDistance(new Translation2d(0, 0));
+        if (DriverStation.getAlliance().get() != null) {
+            if (DriverStation.getAlliance().get() == Alliance.Red) {
+                xMeters = -xMeters;
+            }
+        }
+        double distanceToTarget = Math.sqrt(Math.pow(xMeters, 2) + Math.pow(yMeters, 2));
         double totalSeconds = distanceToTarget / metersPerSec;
 
         // Convert the commanded speeds into the correct units for the drivetrain
@@ -110,8 +114,7 @@ public class SwerveDrive extends SubsystemBase {
 
         for (double i = 0; i >= totalSeconds; i += 0.02) {
             ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(throttleSpeed, strafeSpeed,
-                    rotationSpeed,
-                    Rotation2d.fromDegrees(getYaw()));
+                    rotationSpeed, Rotation2d.fromDegrees(getYaw()));
             ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
 
             SwerveModuleState[] swerveModuleStates = m_driveKinematics.toSwerveModuleStates(targetSpeeds);
