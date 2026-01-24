@@ -299,7 +299,7 @@ public class IntakeArm extends SubsystemBase {
       }
 
       if (m_noteReverse) {
-        m_intakeMotor.set(0.15);
+        m_intakeMotor.set(0.10);
 
         if (!m_noteDetected) {
           m_noteReverse = false;
